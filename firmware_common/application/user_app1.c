@@ -139,10 +139,12 @@ static void UserApp1SM_Idle(void)
   if(IsButtonPressed(BUTTON0))
   {
     LedOn(PURPLE);
+    LedOff(WHITE);
   }
   else
   {
     LedOff(PURPLE);
+    LedOn(WHITE);
   }
 } /* end UserApp1SM_Idle() */
     
