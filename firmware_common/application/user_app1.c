@@ -68,6 +68,27 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------
+Function: wasShort
+Description:
+Determines if tap was short
+*/
+void wasShort(void)
+{
+  LedOn(ORANGE);
+}
+/* end of wasShort*/
+
+/*------------------------------------------------------------
+Function: wasLong
+Description:
+Determines if tap was long
+*/
+void wasLong(void)
+{
+  LedOn(RED);
+}
+/* end of wasShort*/
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
@@ -137,24 +158,23 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  if(u16countTap >= 200)
-  {
-    LedOn(CYAN);
-  }
   if(IsButtonPressed(BUTTON0))
-  { 
-    u16countTap++;
-    LedOn(PURPLE);
+  {
+    LedOn(WHITE);
+  }
+  else 
+  {
     LedOff(WHITE);
+  }
+  if(IsButtonHeld(BUTTON0, 300))
+  {
+    LedOn(PURPLE);
   }
   else
   {
     LedOff(PURPLE);
-    LedOn(WHITE);
-    LedOff(CYAN);
-    u16countTap = 0;
   }
-
+  
 } /* end UserApp1SM_Idle() */
     
 
