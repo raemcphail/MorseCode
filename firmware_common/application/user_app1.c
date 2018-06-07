@@ -136,7 +136,15 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-
+  LedOn(CYAN);
+  if(IsButtonPressed(BUTTON0))
+  {
+    LedOn(PURPLE);
+  }
+  else
+  {
+    LedOff(PURPLE);
+  }
 } /* end UserApp1SM_Idle() */
     
 
