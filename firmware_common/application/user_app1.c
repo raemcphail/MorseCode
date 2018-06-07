@@ -60,7 +60,9 @@ Variable names shall start with "UserApp1_" and be declared as static.
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 //static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
 static u16 u16countTap;
-
+static u16 u16countSpace;
+static u16 u16StartTime;
+static u16 u16StopTime;
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -75,12 +77,12 @@ Determines if tap was short
 */
 void wasShort(void)
 {
-  LedOn(ORANGE);
+  LedOn(GREEN);
 }
 /* end of wasShort*/
 
 /*------------------------------------------------------------
-Function: wasLong
+Function: wasShort
 Description:
 Determines if tap was long
 */
@@ -90,6 +92,51 @@ void wasLong(void)
 }
 /* end of wasShort*/
 
+/*------------------------------------------------------------
+Function: checkTime
+Description:
+
+*/
+void checkTime(void)
+{
+   if(u16countSpace>=600)
+  {
+    LedOn(WHITE);
+  }
+  else
+  {
+    LedOff(WHITE);
+  }
+  
+  if(u16countSpace>=100)
+  {
+    LedOn(PURPLE);
+  }
+  else
+  {
+    LedOff(PURPLE);
+  }
+  
+  if(u16countTap>=300)
+  {
+    LedOn(CYAN);
+  }
+  else
+  {
+    LedOff(CYAN);
+  }
+  
+  if(u16countTap>=1)
+  {
+    LedOn(BLUE);
+  }
+  else
+  {
+    LedOff(BLUE);
+  }
+  
+}
+/* end of checkTime*/
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -108,8 +155,14 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-   /* Set counter to 0 to start*/
+   /* Set counter to 0 to start. Will be hold the start time of each tap*/
+   u16StartTime = 0;
+/* Set counter to 0 to start. Will be hold the stop time of each tap*/
+   u16StopTime = 0;
+   /* Set counter to 0 to start. Counts to 300ms*/
    u16countTap = 0;
+   /* Set counter to 0 to start. Counts to 300ms*/
+   u16countSpace = 0;
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -157,22 +210,31 @@ State Machine Function Definitions
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
-{
+{ 
+  checkTime();
   if(IsButtonPressed(BUTTON0))
   {
-    LedOn(WHITE);
-  }
-  else 
-  {
-    LedOff(WHITE);
-  }
-  if(IsButtonHeld(BUTTON0, 300))
-  {
-    LedOn(PURPLE);
+    u16countSpace == 0;
+    u16countTap++;
   }
   else
   {
-    LedOff(PURPLE);
+    u16countSpace++;
+    if(u16countTap>=300)
+    {
+      wasLong();
+    }
+    else if(u16countTap>=1)
+    {
+      wasShort();
+    }
+    u16countTap = 0;
+  }
+  
+  if(IsButtonPressed(BUTTON1))
+  {
+    LedOff(GREEN);
+    LedOff(RED);
   }
   
 } /* end UserApp1SM_Idle() */
