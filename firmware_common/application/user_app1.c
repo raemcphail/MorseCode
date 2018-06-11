@@ -59,10 +59,11 @@ Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 //static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-static u16 u16countTap;
-static u16 u16countSpace;
-static u16 u16StartTime;
-static u16 u16StopTime;
+static u16 u16countTapTime;
+static u16 u16countSpaceTime;
+static u8 au8Message[] = "";
+static u16 u16countLetter; 
+  
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -99,7 +100,7 @@ Description:
 */
 void checkTime(void)
 {
-   if(u16countSpace>=600)
+   if(u16countSpaceTime>=1000)
   {
     LedOn(WHITE);
   }
@@ -108,16 +109,18 @@ void checkTime(void)
     LedOff(WHITE);
   }
   
-  if(u16countSpace>=100)
+  if(u16countSpaceTime>=300)
   {
     LedOn(PURPLE);
+    LedOff(GREEN);
+    LedOff(RED);
   }
   else
   {
     LedOff(PURPLE);
   }
   
-  if(u16countTap>=300)
+  if(u16countTapTime>=300)
   {
     LedOn(CYAN);
   }
@@ -126,7 +129,7 @@ void checkTime(void)
     LedOff(CYAN);
   }
   
-  if(u16countTap>=1)
+  if(u16countTapTime>=1)
   {
     LedOn(BLUE);
   }
@@ -155,14 +158,12 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-   /* Set counter to 0 to start. Will be hold the start time of each tap*/
-   u16StartTime = 0;
-/* Set counter to 0 to start. Will be hold the stop time of each tap*/
-   u16StopTime = 0;
+  
+    LCDCommand(LCD_CLEAR_CMD);
    /* Set counter to 0 to start. Counts to 300ms*/
-   u16countTap = 0;
+   u16countTapTime = 0;
    /* Set counter to 0 to start. Counts to 300ms*/
-   u16countSpace = 0;
+   u16countSpaceTime = 0;
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -214,29 +215,25 @@ static void UserApp1SM_Idle(void)
   checkTime();
   if(IsButtonPressed(BUTTON0))
   {
-    u16countSpace == 0;
-    u16countTap++;
+    u16countSpaceTime = 0;
+    u16countTapTime++;
+    LedOff(WHITE);
+    LedOff(PURPLE);
   }
   else
   {
-    u16countSpace++;
-    if(u16countTap>=300)
+    u16countSpaceTime++;
+    if(u16countTapTime>=300)
     {
       wasLong();
     }
-    else if(u16countTap>=1)
+    else if(u16countTapTime>=1)
     {
       wasShort();
     }
-    u16countTap = 0;
+    u16countTapTime = 0;
   }
-  
-  if(IsButtonPressed(BUTTON1))
-  {
-    LedOff(GREEN);
-    LedOff(RED);
-  }
-  
+   
 } /* end UserApp1SM_Idle() */
     
 
