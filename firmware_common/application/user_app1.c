@@ -474,7 +474,7 @@ Determines if tap was short
 void wasShort(void)
 {
   LedOn(GREEN);
-  LCDMessage(LINE1_START_ADDR + u16countTaps, ".");
+  LCDMessage(LINE1_START_ADDR + u16countTaps, ".                   ");
   au8Taps[u16countTaps] = '.';
   u16countTaps++;
   if(u16countTaps >= 20)
@@ -492,7 +492,7 @@ Determines if tap was long
 void wasLong(void)
 {
   LedOn(RED);
-  LCDMessage(LINE1_START_ADDR + u16countTaps, "-");
+  LCDMessage(LINE1_START_ADDR + u16countTaps, "-                          ");
   au8Taps[u16countTaps] = '-';
   u16countTaps++;
   if(u16countTaps >= 20)
@@ -548,7 +548,6 @@ void wasLetter(void)
     wasY();
     wasZ();
   }
-  
   
   if(u16countLetter >= 20)
   {
