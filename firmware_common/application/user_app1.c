@@ -61,7 +61,9 @@ static fnCode_type UserApp1_StateMachine;            /* The state machine functi
 //static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
 static u16 u16countTapTime;
 static u16 u16countSpaceTime;
+static u8 au8Taps[] = "";
 static u8 au8Message[] = "";
+static u16 u16countTaps;
 static u16 u16countLetter; 
   
 /**********************************************************************************************************************
@@ -72,6 +74,37 @@ Function Definitions
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
 /*------------------------------------------------------------
+Function: wasE
+Description:
+Determines if letter was E
+*/
+void wasE(void)
+{
+  if(au8Taps[0] == '.')
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "E");
+    au8Message[u16countLetter] = 'E';
+    u16countLetter++;
+  }
+}
+/* end of wasE*/
+
+/*------------------------------------------------------------
+Function: wasT
+Description:
+Determines if letter was T
+*/
+void wasT(void)
+{
+  if(au8Taps[0] == '-')
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "T");
+    au8Message[u16countLetter] = 'T';
+    u16countLetter++;
+  }
+}
+/* end of wasT*/
+/*------------------------------------------------------------
 Function: wasShort
 Description:
 Determines if tap was short
@@ -79,19 +112,53 @@ Determines if tap was short
 void wasShort(void)
 {
   LedOn(GREEN);
+  LCDMessage(LINE1_START_ADDR + u16countTaps, ".");
+  au8Taps[u16countTaps] = '.';
+  u16countTaps++;
+  if(u16countTaps >= 20)
+  {
+    u16countTaps = 0;
+  }
 }
 /* end of wasShort*/
 
 /*------------------------------------------------------------
-Function: wasShort
+Function: wasLong
 Description:
 Determines if tap was long
 */
 void wasLong(void)
 {
   LedOn(RED);
+  LCDMessage(LINE1_START_ADDR + u16countTaps, "-");
+  au8Taps[u16countTaps] = '-';
+  u16countTaps++;
+  if(u16countTaps >= 20)
+  {
+    u16countTaps = 0;
+  }
 }
-/* end of wasShort*/
+/* end of wasLong*/
+
+/*------------------------------------------------------------
+Function: wasLetter
+Description:
+Determines if a letter was correctly entered
+*/
+void wasLetter(void)
+{
+  LedOn(YELLOW);
+  if(u16countTaps == 1)
+  {
+    wasT();
+    wasE();
+  }
+  
+ 
+  u16countTaps = 0;
+  
+}
+/* end of wasLetter*/
 
 /*------------------------------------------------------------
 Function: checkTime
@@ -103,6 +170,7 @@ void checkTime(void)
    if(u16countSpaceTime>=1000)
   {
     LedOn(WHITE);
+    wasLetter();
   }
   else
   {
@@ -158,7 +226,11 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-  
+    /* Set counter to 0 to start. Counts number of longs or shorts*/
+    static u16 u16countTaps;
+   /* Set counter to 0 to start. Counts number of letters*/
+    static u16 u16countLetter; 
+   /* Intially clears the LCD*/
     LCDCommand(LCD_CLEAR_CMD);
    /* Set counter to 0 to start. Counts to 300ms*/
    u16countTapTime = 0;

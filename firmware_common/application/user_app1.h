@@ -40,7 +40,36 @@ Function Declarations
   void wasShort(void);
   void wasLong(void);
   void checkTime(void);
+  void wasLetter(void);
 
+  void wasA(void);
+  void wasB(void);
+  void wasC(void);
+  void wasD(void);
+  void wasE(void);
+  void wasF(void);
+  void wasG(void);
+  void wasH(void);
+  void wasI(void);
+  void wasJ(void);
+  void wasK(void);
+  void wasL(void);
+  void wasM(void);
+ 
+  void wasN(void);
+  void wasO(void);
+  void wasP(void);
+  void wasQ(void);
+  void wasR(void);
+  void wasS(void);
+  void wasT(void);
+  void wasU(void);
+  void wasV(void);
+  void wasW(void);
+  void wasX(void);
+  void wasY(void);
+  void wasZ(void);
+  
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
 /*--------------------------------------------------------------------------------------------------------------------*/
