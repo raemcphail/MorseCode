@@ -167,6 +167,306 @@ void wasN(void)
 }
 /* end of wasN*/
 /*------------------------------------------------------------
+Function: wasD
+Description:
+Determines if letter was D
+*/
+void wasD(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "D");
+    au8Message[u16countLetter] = 'D';
+    u16countLetter++;
+  }
+}
+/* end of wasD*/
+/*------------------------------------------------------------
+Function: wasG
+Description:
+Determines if letter was G
+*/
+void wasG(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "G");
+    au8Message[u16countLetter] = 'G';
+    u16countLetter++;
+  }
+}
+/* end of wasG*/
+/*------------------------------------------------------------
+Function: wasK
+Description:
+Determines if letter was K
+*/
+void wasK(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "K");
+    au8Message[u16countLetter] = 'K';
+    u16countLetter++;
+  }
+}
+/* end of wasK*/
+/*------------------------------------------------------------
+Function: wasO
+Description:
+Determines if letter was O
+*/
+void wasO(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "O");
+    au8Message[u16countLetter] = 'O';
+    u16countLetter++;
+  }
+}
+/* end of wasO*/
+/*------------------------------------------------------------
+Function: wasR
+Description:
+Determines if letter was R
+*/
+void wasR(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "R");
+    au8Message[u16countLetter] = 'R';
+    u16countLetter++;
+  }
+}
+/* end of wasR*/
+/*------------------------------------------------------------
+Function: wasS
+Description:
+Determines if letter was S
+*/
+void wasS(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "S");
+    au8Message[u16countLetter] = 'S';
+    u16countLetter++;
+  }
+}
+/* end of wasS*/
+/*------------------------------------------------------------
+Function: wasU
+Description:
+Determines if letter was U
+*/
+void wasU(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "U");
+    au8Message[u16countLetter] = 'U';
+    u16countLetter++;
+  }
+}
+/* end of wasU*/
+/*------------------------------------------------------------
+Function: wasW
+Description:
+Determines if letter was W
+*/
+void wasW(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "W");
+    au8Message[u16countLetter] = 'W';
+    u16countLetter++;
+  }
+}
+/* end of wasW*/
+/*------------------------------------------------------------
+Function: wasB
+Description:
+Determines if letter was B
+*/
+void wasB(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "B");
+    au8Message[u16countLetter] = 'B';
+    u16countLetter++;
+  }
+}
+/* end of wasB*/
+/*------------------------------------------------------------
+Function: wasC
+Description:
+Determines if letter was C
+*/
+void wasC(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "C");
+    au8Message[u16countLetter] = 'C';
+    u16countLetter++;
+  }
+}
+/* end of wasC*/
+/*------------------------------------------------------------
+Function: wasF
+Description:
+Determines if letter was F
+*/
+void wasF(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "F");
+    au8Message[u16countLetter] = 'F';
+    u16countLetter++;
+  }
+}
+/* end of wasF*/
+/*------------------------------------------------------------
+Function: wasH
+Description:
+Determines if letter was H
+*/
+void wasH(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "H");
+    au8Message[u16countLetter] = 'H';
+    u16countLetter++;
+  }
+}
+/* end of wasH*/
+/*------------------------------------------------------------
+Function: wasJ
+Description:
+Determines if letter was J
+*/
+void wasJ(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "J");
+    au8Message[u16countLetter] = 'J';
+    u16countLetter++;
+  }
+}
+/* end of wasJ*/
+/*------------------------------------------------------------
+Function: wasL
+Description:
+Determines if letter was L
+*/
+void wasL(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "L");
+    au8Message[u16countLetter] = 'L';
+    u16countLetter++;
+  }
+}
+/* end of wasL*/
+/*------------------------------------------------------------
+Function: wasP
+Description:
+Determines if letter was P
+*/
+void wasP(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "P");
+    au8Message[u16countLetter] = 'P';
+    u16countLetter++;
+  }
+}
+/* end of wasP*/
+/*------------------------------------------------------------
+Function: wasQ
+Description:
+Determines if letter was Q
+*/
+void wasQ(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "Q");
+    au8Message[u16countLetter] = 'Q';
+    u16countLetter++;
+  }
+}
+/* end of wasQ*/
+/*------------------------------------------------------------
+Function: wasV
+Description:
+Determines if letter was V
+*/
+void wasV(void)
+{
+  if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "V");
+    au8Message[u16countLetter] = 'V';
+    u16countLetter++;
+  }
+}
+/* end of wasV*/
+/*------------------------------------------------------------
+Function: wasX
+Description:
+Determines if letter was X
+*/
+void wasX(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "X");
+    au8Message[u16countLetter] = 'X';
+    u16countLetter++;
+  }
+}
+/* end of wasX*/
+/*------------------------------------------------------------
+Function: wasY
+Description:
+Determines if letter was Y
+*/
+void wasY(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "Y");
+    au8Message[u16countLetter] = 'Y';
+    u16countLetter++;
+  }
+}
+/* end of wasY*/
+/*------------------------------------------------------------
+Function: wasZ
+Description:
+Determines if letter was Z
+*/
+void wasZ(void)
+{
+  if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "Z");
+    au8Message[u16countLetter] = 'Z';
+    u16countLetter++;
+  }
+}
+/* end of wasZ*/
+/*------------------------------------------------------------
 Function: wasShort
 Description:
 Determines if tap was short
@@ -222,6 +522,33 @@ void wasLetter(void)
     wasM();
     wasN();
   }
+  if(u16countTaps == 3)
+  {
+    wasD();
+    wasG();
+    wasK();
+    wasO();
+    wasR();
+    wasS();
+    wasU();
+    wasW();
+  }
+   if(u16countTaps == 4)
+  {
+    wasB();
+    wasC();
+    wasF();
+    wasH();
+    wasJ();
+    wasL();
+    wasP();
+    wasQ();
+    wasV();
+    wasX();
+    wasY();
+    wasZ();
+  }
+  
   
   if(u16countLetter >= 20)
   {
