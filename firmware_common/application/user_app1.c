@@ -509,7 +509,6 @@ Determines if a letter was correctly entered
 */
 void wasLetter(void)
 {
-  LedOn(YELLOW);
   if(u16countTaps == 1)
   {
     wasT();
@@ -564,9 +563,9 @@ Description:deletes letter that was entered most recently
 */
 void deleteLetter(void)
 {
-  LedOn(RED);
   u16countLetter--;
   LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
+  au8Taps[u16countTaps] = ' ';
 }
 /* end of deleteLetter*/
 
@@ -716,14 +715,24 @@ static void UserApp1SM_Idle(void)
     u16countTapTime = 0;
   }
   
-  if(WasButtonPressed(BUTTON3))
+  if(WasButtonPressed(BUTTON1))
   {
-    ButtonAcknowledge(BUTTON3);
+    ButtonAcknowledge(BUTTON1);
     deleteLetter();
   }
-  else
+  if(WasButtonPressed(BUTTON2))
   {
-    LedOff(RED);
+    ButtonAcknowledge(BUTTON2);
+    LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
+    au8Message[u16countLetter] = ' ';
+    u16countLetter++;
+  }
+  if(WasButtonPressed(BUTTON3))
+  {
+    LCDCommand(LCD_CLEAR_CMD);
+    u16countTaps = 0;
+    u16countLetter = 0; 
+    ButtonAcknowledge(BUTTON3);
   }
    
 } /* end UserApp1SM_Idle() */
