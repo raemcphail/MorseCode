@@ -557,6 +557,18 @@ void wasLetter(void)
   
 }
 /* end of wasLetter*/
+/*------------------------------------------------------------
+Function: deleteLetter
+Description:deletes letter that was entered most recently
+
+*/
+void deleteLetter(void)
+{
+  LedOn(RED);
+  u16countLetter--;
+  LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
+}
+/* end of deleteLetter*/
 
 /*------------------------------------------------------------
 Function: checkTime
@@ -702,6 +714,16 @@ static void UserApp1SM_Idle(void)
       wasShort();
     }
     u16countTapTime = 0;
+  }
+  
+  if(WasButtonPressed(BUTTON3))
+  {
+    ButtonAcknowledge(BUTTON3);
+    deleteLetter();
+  }
+  else
+  {
+    LedOff(RED);
   }
    
 } /* end UserApp1SM_Idle() */

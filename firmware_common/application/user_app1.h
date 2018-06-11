@@ -41,6 +41,7 @@ Function Declarations
   void wasLong(void);
   void checkTime(void);
   void wasLetter(void);
+  void deleteLetter(void);
 
   void wasA(void);
   void wasB(void);
