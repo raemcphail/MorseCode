@@ -104,6 +104,68 @@ void wasT(void)
   }
 }
 /* end of wasT*/
+
+/*------------------------------------------------------------
+Function: wasA
+Description:
+Determines if letter was A
+*/
+void wasA(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "A");
+    au8Message[u16countLetter] = 'A';
+    u16countLetter++;
+  }
+}
+/* end of wasA*/
+/*------------------------------------------------------------
+Function: wasI
+Description:
+Determines if letter was I
+*/
+void wasI(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "I");
+    au8Message[u16countLetter] = 'I';
+    u16countLetter++;
+  }
+}
+/* end of wasI*/
+
+/*------------------------------------------------------------
+Function: wasM
+Description:
+Determines if letter was M
+*/
+void wasM(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "M");
+    au8Message[u16countLetter] = 'M';
+    u16countLetter++;
+  }
+}
+/* end of wasm*/
+/*------------------------------------------------------------
+Function: wasN
+Description:
+Determines if letter was N
+*/
+void wasN(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "N");
+    au8Message[u16countLetter] = 'N';
+    u16countLetter++;
+  }
+}
+/* end of wasN*/
 /*------------------------------------------------------------
 Function: wasShort
 Description:
@@ -153,8 +215,18 @@ void wasLetter(void)
     wasT();
     wasE();
   }
+  if(u16countTaps == 2)
+  {
+    wasA();
+    wasI();
+    wasM();
+    wasN();
+  }
   
- 
+  if(u16countLetter >= 20)
+  {
+    u16countLetter = 0;
+  }
   u16countTaps = 0;
   
 }
