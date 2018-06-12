@@ -642,7 +642,12 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-  
+    u8 au8WelcomeMessage[] = "AntMaster";
+    /* Set a message up on LCD. Delay is required to let the clear command send */
+    LCDCommand(LCD_CLEAR_CMD);
+    for(u32 i = 0; i < 10000; i++);
+    LCDMessage(LINE1_START_ADDR, au8WelcomeMessage);
+    
     /* Configure ANT for this application */
     UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
     UserApp1_sChannelInfo.AntChannelType              = ANT_CHANNEL_TYPE_USERAPP;
@@ -687,7 +692,7 @@ void UserApp1Initialize(void)
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    UserApp1_StateMachine = UserApp1SM_Idle;
+  //  UserApp1_StateMachine = UserApp1SM_Idle;
   }
   else
   {
