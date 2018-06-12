@@ -790,7 +790,7 @@ static void UserApp1SM_AntChannelAssign()
   {
     /* Channel Assignment is successful so open channel and procede to idle state */
     AntOpenChannelNumber (ANT_CHANNEL_USERAPP);
-    UserApp1_StateMachine = UserApp1SM_Idle;
+    UserApp1_StateMachine = UserApp1SM_SendAntMessage;
   }
   
   /* Watch for time out */
@@ -800,6 +800,27 @@ static void UserApp1SM_AntChannelAssign()
     UserApp1_StateMachine = UserApp1SM_Error;
   }
 }/* end UserApp1SM_AntChannelAssign() */
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ANT channel to be assigned */
+static void UserApp1SM_SendAntMessage()
+{
+  if(IsButtonPressed(BUTTON0))
+  {
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0xff;
+    }
+  }
+  else
+  {
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0x00;
+    }
+  }
+    
+}/* end UserApp1SM_SendAntMessage() */
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Handle an error */
 static void UserApp1SM_Error(void)          
