@@ -69,7 +69,7 @@ AntAssignChannelInfoType UserApp1_sChannelInfo;
 static u16 u16countTapTime;
 static u16 u16countSpaceTime;
 static u8 au8Taps[] = "";
-static u8 au8Message[] = "";
+//static u8 au8Message[] = "";
 static u16 u16countTaps;
 static u16 u16countLetter; 
   
@@ -106,7 +106,7 @@ void wasT(void)
   if(au8Taps[0] == '-')
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "T");
-    au8Message[u16countLetter] = 'T';
+    au8TestMessage[u16countLetter] = 0x20;
     u16countLetter++;
   }
 }
@@ -122,7 +122,7 @@ void wasA(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "A");
-    au8Message[u16countLetter] = 'A';
+    au8TestMessage[u16countLetter] = 0x01;
     u16countLetter++;
   }
 }
@@ -137,7 +137,7 @@ void wasI(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "I");
-    au8Message[u16countLetter] = 'I';
+    au8TestMessage[u16countLetter] = 0x09;
     u16countLetter++;
   }
 }
@@ -153,7 +153,7 @@ void wasM(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "M");
-    au8Message[u16countLetter] = 'M';
+    au8TestMessage[u16countLetter] = 0x13;
     u16countLetter++;
   }
 }
@@ -168,7 +168,7 @@ void wasN(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "N");
-    au8Message[u16countLetter] = 'N';
+    au8TestMessage[u16countLetter] = 0x14;
     u16countLetter++;
   }
 }
@@ -183,7 +183,7 @@ void wasD(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "D");
-    au8Message[u16countLetter] = 'D';
+    au8TestMessage[u16countLetter] = 0x04;
     u16countLetter++;
   }
 }
@@ -198,7 +198,7 @@ void wasG(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "G");
-    au8Message[u16countLetter] = 'G';
+    au8TestMessage[u16countLetter] = 0x07;
     u16countLetter++;
   }
 }
@@ -213,7 +213,7 @@ void wasK(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "K");
-    au8Message[u16countLetter] = 'K';
+    au8TestMessage[u16countLetter] = 0x11;
     u16countLetter++;
   }
 }
@@ -228,7 +228,7 @@ void wasO(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "O");
-    au8Message[u16countLetter] = 'O';
+    au8TestMessage[u16countLetter] = 0x15;
     u16countLetter++;
   }
 }
@@ -243,7 +243,7 @@ void wasR(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "R");
-    au8Message[u16countLetter] = 'R';
+    au8TestMessage[u16countLetter] = 0x18;
     u16countLetter++;
   }
 }
@@ -258,7 +258,7 @@ void wasS(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "S");
-    au8Message[u16countLetter] = 'S';
+    au8TestMessage[u16countLetter] = 0x19;
     u16countLetter++;
   }
 }
@@ -273,7 +273,7 @@ void wasU(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "U");
-    au8Message[u16countLetter] = 'U';
+    au8TestMessage[u16countLetter] = 0x21;
     u16countLetter++;
   }
 }
@@ -288,7 +288,7 @@ void wasW(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "W");
-    au8Message[u16countLetter] = 'W';
+    au8TestMessage[u16countLetter] = 0x23;
     u16countLetter++;
   }
 }
@@ -303,7 +303,7 @@ void wasB(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "B");
-    au8Message[u16countLetter] = 'B';
+    au8TestMessage[u16countLetter] = 0x02;
     u16countLetter++;
   }
 }
@@ -318,7 +318,7 @@ void wasC(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "C");
-    au8Message[u16countLetter] = 'C';
+    au8TestMessage[u16countLetter] = 0x03;
     u16countLetter++;
   }
 }
@@ -333,7 +333,7 @@ void wasF(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "F");
-    au8Message[u16countLetter] = 'F';
+    au8TestMessage[u16countLetter] = 0x06;
     u16countLetter++;
   }
 }
@@ -348,7 +348,7 @@ void wasH(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "H");
-    au8Message[u16countLetter] = 'H';
+    au8TestMessage[u16countLetter] = 0x08;
     u16countLetter++;
   }
 }
@@ -363,7 +363,7 @@ void wasJ(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "J");
-    au8Message[u16countLetter] = 'J';
+    au8TestMessage[u16countLetter] = 0x10;
     u16countLetter++;
   }
 }
@@ -378,7 +378,7 @@ void wasL(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "L");
-    au8Message[u16countLetter] = 'L';
+    au8TestMessage[u16countLetter] = 0x12;
     u16countLetter++;
   }
 }
@@ -393,7 +393,7 @@ void wasP(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "P");
-    au8Message[u16countLetter] = 'P';
+    au8TestMessage[u16countLetter] = 0x16;
     u16countLetter++;
   }
 }
@@ -408,7 +408,7 @@ void wasQ(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Q");
-    au8Message[u16countLetter] = 'Q';
+    au8TestMessage[u16countLetter] = 0x17;
     u16countLetter++;
   }
 }
@@ -423,7 +423,7 @@ void wasV(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "V");
-    au8Message[u16countLetter] = 'V';
+    au8TestMessage[u16countLetter] = 0x22;
     u16countLetter++;
   }
 }
@@ -438,7 +438,7 @@ void wasX(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "X");
-    au8Message[u16countLetter] = 'X';
+    au8TestMessage[u16countLetter] = 0x24;
     u16countLetter++;
   }
 }
@@ -453,7 +453,7 @@ void wasY(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Y");
-    au8Message[u16countLetter] = 'Y';
+    au8TestMessage[u16countLetter] = 0x25;
     u16countLetter++;
   }
 }
@@ -468,7 +468,7 @@ void wasZ(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Z");
-    au8Message[u16countLetter] = 'Z';
+    au8TestMessage[u16countLetter] = 0x26;
     u16countLetter++;
   }
 }
@@ -484,7 +484,7 @@ void wasShort(void)
   LCDMessage(LINE1_START_ADDR + u16countTaps, ".                   ");
   au8Taps[u16countTaps] = '.';
   u16countTaps++;
-  if(u16countTaps >= 20)
+  if(u16countTaps >= 6)
   {
     u16countTaps = 0;
   }
@@ -502,7 +502,7 @@ void wasLong(void)
   LCDMessage(LINE1_START_ADDR + u16countTaps, "-                          ");
   au8Taps[u16countTaps] = '-';
   u16countTaps++;
-  if(u16countTaps >= 20)
+  if(u16countTaps >=6)
   {
     u16countTaps = 0;
   }
@@ -555,7 +555,7 @@ void wasLetter(void)
     wasZ();
   }
   
-  if(u16countLetter >= 20)
+  if(u16countLetter >= 8)
   {
     u16countLetter = 0;
   }
@@ -570,8 +570,16 @@ Description:deletes letter that was entered most recently
 */
 void deleteLetter(void)
 {
-  u16countLetter--;
+  if(u16countLetter == 0)
+  {
+    u16countLetter = 7;
+  }
+  else
+  {
+    u16countLetter--;
+  }
   LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
+  au8TestMessage[u16countLetter] = 0x00;
   au8Taps[u16countTaps] = ' ';
 }
 /* end of deleteLetter*/
@@ -786,12 +794,16 @@ static void UserApp1SM_Idle(void)
   {
     ButtonAcknowledge(BUTTON2);
     LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
-    au8Message[u16countLetter] = ' ';
+    au8TestMessage[u16countLetter] = 0x00;
     u16countLetter++;
   }
   if(WasButtonPressed(BUTTON3))
   {
     LCDCommand(LCD_CLEAR_CMD);
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0x00;
+    }
     u16countTaps = 0;
     u16countLetter = 0; 
     ButtonAcknowledge(BUTTON3);
