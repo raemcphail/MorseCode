@@ -814,11 +814,10 @@ static void UserApp1SM_SendAntMessage()
   else
   {
     LedOff(YELLOW);
-    au8TestMessage[0] = 0x77;
+    au8TestMessage[0] = 0x33;
   }
 
-  
-  if(AntReadAppMessageBuffer)
+  if(AntReadAppMessageBuffer())
   {
     /* new message from ANT task: check what it is */
     if(G_eAntApiCurrentMessageClass == ANT_DATA)
@@ -829,6 +828,7 @@ static void UserApp1SM_SendAntMessage()
     {
       LedOn(BLUE);
     }
+
     AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
   }/* end AntReadAppMessageBuffer */
     
