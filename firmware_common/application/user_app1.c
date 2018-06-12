@@ -63,7 +63,7 @@ Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-static u8 au8testMessage[] = {0, 0, 0, 0, 0, 0, 0, 0};
+static u8 au8TestMessage[] = {1, 1, 1, 0, 0, 0, 0, 0};
 AntAssignChannelInfoType UserApp1_sChannelInfo;
 
 static u16 u16countTapTime;
@@ -805,20 +805,32 @@ static void UserApp1SM_AntChannelAssign()
 /* Wait for ANT channel to be assigned */
 static void UserApp1SM_SendAntMessage()
 {
-  if(IsButtonPressed(BUTTON0))
+  
+ if(IsButtonPressed(BUTTON0))
   {
-    for(int i = 0; i < 8; i++)
-    {
-      au8TestMessage[i] = 0xff;
-    }
+    LedOn(YELLOW);
+    au8TestMessage[0] = 0x77;
   }
   else
   {
-    for(int i = 0; i < 8; i++)
-    {
-      au8TestMessage[i] = 0x00;
-    }
+    LedOff(YELLOW);
+    au8TestMessage[0] = 0x77;
   }
+
+  
+  if(AntReadAppMessageBuffer)
+  {
+    /* new message from ANT task: check what it is */
+    if(G_eAntApiCurrentMessageClass == ANT_DATA)
+    {
+      LedOn(GREEN);
+    }
+    else if(G_eAntApiCurrentMessageClass == ANT_TICK)
+    {
+      LedOn(BLUE);
+    }
+    AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
+  }/* end AntReadAppMessageBuffer */
     
 }/* end UserApp1SM_SendAntMessage() */
 /*-------------------------------------------------------------------------------------------------------------------*/

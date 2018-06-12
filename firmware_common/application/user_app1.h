@@ -97,10 +97,10 @@ void UserApp1RunActiveState(void);
 State Machine Declarations
 ***********************************************************************************************************************/
 static void UserApp1SM_Idle(void);    
-
 static void UserApp1SM_Error(void);   
-
 static void UserApp1SM_AntChannelAssign(void);
+static void UserApp1SM_SendAntMessage(void);
+
 
 
 #endif /* __USER_APP1_H */
