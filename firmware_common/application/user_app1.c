@@ -63,9 +63,9 @@ Global variable definitions with scope limited to this local application.
 Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
-//static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-
-
+static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
+static u8 au8TestMessage[] = {0, 0, 0, 0, 0, 0, 0, 0};
+AntAssignChannelInfoType UserApp1_sChannelInfo;
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -104,8 +104,8 @@ void UserApp1Initialize(void)
    UserApp1_sChannelInfo.AntChannelPeriodLo          =   ANT_CHANNEL_PERIOD_LO_USERAPP;
    UserApp1_sChannelInfo.AntChannelPeriodHi          =   ANT_CHANNEL_PERIOD_HI_USERAPP;
    
-   UserApp1_sChannelInfo.AntDeviceIdLo               =  ANT_DEVICE_LO_USERAPP;
-   UserApp1_sChannelInfo.AntDeviceIdHi               =  ANT_DEVICE_HI_USERAPP;
+   UserApp1_sChannelInfo.AntDeviceIdLo               =  ANT_DEVICEID_LO_USERAPP;
+   UserApp1_sChannelInfo.AntDeviceIdHi               =  ANT_DEVICEID_HI_USERAPP;
    UserApp1_sChannelInfo.AntDeviceType               =  ANT_DEVICE_TYPE_USERAPP;
    UserApp1_sChannelInfo.AntTransmissionType         =  ANT_TRANSMISSION_TYPE_USERAPP;
    UserApp1_sChannelInfo.AntFrequency                =  ANT_FREQUENCY_USERAPP;
@@ -114,19 +114,23 @@ void UserApp1Initialize(void)
    UserApp1_sChannelInfo.AntNetwork = ANT_NETWORK_DEFAULT;
    for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
    {
-    UserApp1_sChannel
+      UserApp1_sChannelInfo.AntNetworkKey[i] = ANT_DEFAULT_NETWORK_KEY;
    }
-  
-  /* If good initialization, set state to Idle */
-  if( 1 )
-  {
-    UserApp1_StateMachine = UserApp1SM_Idle;
-  }
-  else
-  {
-    /* The task isn't properly initialized, so shut it down and don't run */
-    UserApp1_StateMachine = UserApp1SM_Error;
-  }
+   
+   /* Attempt to queue the ANT channel setup */
+   if(AntAssignChannel(&UserApp1_sChannelInfo))
+   {
+     LedOn(ORANGE);
+      UserApp1_u32Timeout = G_u32SystemTime1ms;
+      UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
+   }
+   else
+   {
+      /* The task isn't properly intialized, so shut down and don't run */
+     //DebugPrintf(UserApp1_au8MessageFail);
+     UserApp1_StateMachine = UserApp1SM_Error;
+     LedOn(RED);
+   }
 
 } /* end UserApp1Initialize() */
 
@@ -162,10 +166,104 @@ State Machine Function Definitions
 **********************************************************************************************************************/
 
 /*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ANT channel assignment */
+static void UserApp1SM_AntChannelAssign()
+{
+  if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP)  == ANT_CONFIGURED)
+  {
+    LedOn(YELLOW);
+     /* Channel assignment is successful, so open channel and procede to idle state */
+    AntOpenChannelNumber(ANT_CHANNEL_USERAPP);
+    UserApp1_StateMachine = UserApp1SM_Idle;
+  }
+  
+  /* Watch for time out */
+  if(IsTimeUp(&UserApp1_u32Timeout, 3000))
+  {
+    LedOn(RED);
+    //  DebugPrintf(UserApp1_au8MessageFail);
+      UserApp1_StateMachine = UserApp1SM_Error;
+  }
+}/* end UserApp1SM_AntChannelAssign */
+
+
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-
+  
+  if(IsButtonPressed(BUTTON0))
+  {
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0xff;
+    }
+  }
+  else if(IsButtonPressed(BUTTON1))
+  {
+    au8TestMessage[0] = 0x00;
+    au8TestMessage[1] = 0x01;
+    au8TestMessage[2] = 0x02;
+    au8TestMessage[3] = 0x03;
+    au8TestMessage[4] = 0x04;
+    au8TestMessage[5] = 0x05;
+    au8TestMessage[6] = 0x06;
+    au8TestMessage[7] = 0x07;
+  }
+    else if(IsButtonPressed(BUTTON2))
+  {
+    au8TestMessage[0] = 0x00;
+    au8TestMessage[1] = 0x11;
+    au8TestMessage[2] = 0x22;
+    au8TestMessage[3] = 0x33;
+    au8TestMessage[4] = 0x44;
+    au8TestMessage[5] = 0x55;
+    au8TestMessage[6] = 0x66;
+    au8TestMessage[7] = 0x77;
+  }
+  else
+  {
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0x00;
+    }
+  }
+   if(AntReadAppMessageBuffer())
+   {
+     /* New message from ANT task: check what it is */
+      if(G_eAntApiCurrentMessageClass == ANT_DATA)
+      {
+        LedOn(GREEN);
+          /* we got some data */
+      }
+      else if(G_eAntApiCurrentMessageClass == ANT_TICK)
+      {
+        LedOn(BLUE);
+        
+        /* A channel period has gone by: typically this is when new data should
+           be queued to be sent*/
+        /* Update and queue the new message data 
+        au8TestMessage[7]++;
+        if(au8TestMessage[7] == 0)
+        {
+          au8TestMessage[6]++;
+          if(au8TestMessage[6] == 0)
+          {
+            au8TestMessage[5]++;
+          }
+        }
+        
+        au8TestMessage[0] = 0x00;
+        if(IsButtonPressed(BUTTON0))
+        {
+          au8TestMessage[0] = 0xff;
+        }
+        */
+        
+      }
+      LedOff(GREEN);
+      AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
+      LedOff(BLUE);
+   } /* end AntReadAppMessageBuffer() */ 
 } /* end UserApp1SM_Idle() */
     
 
