@@ -63,7 +63,7 @@ Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-static u8 au8TestMessage[] = {1, 1, 1, 0, 0, 0, 0, 0};
+static u8 au8TestMessage[] = {0, 0, 0, 0, 0, 0, 0, 0};
 AntAssignChannelInfoType UserApp1_sChannelInfo;
 
 static u16 u16countTapTime;
@@ -90,7 +90,7 @@ void wasE(void)
   if(au8Taps[0] == '.')
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "E");
-    au8Message[u16countLetter] = 'E';
+    au8TestMessage[u16countLetter] = 0x05;
     u16countLetter++;
   }
 }
@@ -737,6 +737,24 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 { 
+  
+  /* start AntReadAppMessageBuffer */
+  if(AntReadAppMessageBuffer())
+  {
+    /* new message from ANT task: check what it is */
+    if(G_eAntApiCurrentMessageClass == ANT_DATA)
+    {
+      
+    }
+    else if(G_eAntApiCurrentMessageClass == ANT_TICK)
+    {
+      
+    }
+
+    AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
+  }/* end AntReadAppMessageBuffer */
+  
+  
   checkTime();
   if(IsButtonPressed(BUTTON0))
   {
@@ -790,7 +808,7 @@ static void UserApp1SM_AntChannelAssign()
   {
     /* Channel Assignment is successful so open channel and procede to idle state */
     AntOpenChannelNumber (ANT_CHANNEL_USERAPP);
-    UserApp1_StateMachine = UserApp1SM_SendAntMessage;
+    UserApp1_StateMachine = UserApp1SM_Idle;
   }
   
   /* Watch for time out */
@@ -808,13 +826,41 @@ static void UserApp1SM_SendAntMessage()
   
  if(IsButtonPressed(BUTTON0))
   {
-    LedOn(YELLOW);
-    au8TestMessage[0] = 0x77;
+   for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0x77;
+    }
   }
-  else
+ else if(IsButtonPressed(BUTTON1))
+ {
+     au8TestMessage[0] = 0x00;
+     au8TestMessage[1] = 0x11;
+     au8TestMessage[2] = 0x22;
+     au8TestMessage[3] = 0x33;
+     au8TestMessage[4] = 0x44;
+     au8TestMessage[5] = 0x55;
+     au8TestMessage[6] = 0x66;
+     au8TestMessage[7] = 0x77;
+     
+ }
+  else if(IsButtonPressed(BUTTON2))
+ {
+     au8TestMessage[0] = 0x00;
+     au8TestMessage[1] = 0x10;
+     au8TestMessage[2] = 0x20;
+     au8TestMessage[3] = 0x30;
+     au8TestMessage[4] = 0x40;
+     au8TestMessage[5] = 0x50;
+     au8TestMessage[6] = 0x60;
+     au8TestMessage[7] = 0x70;
+     
+ }
+ else
   {
-    LedOff(YELLOW);
-    au8TestMessage[0] = 0x33;
+    for(int i = 0; i < 8; i++)
+    {
+      au8TestMessage[i] = 0x00;
+    }
   }
 
   if(AntReadAppMessageBuffer())
@@ -822,11 +868,11 @@ static void UserApp1SM_SendAntMessage()
     /* new message from ANT task: check what it is */
     if(G_eAntApiCurrentMessageClass == ANT_DATA)
     {
-      LedOn(GREEN);
+      
     }
     else if(G_eAntApiCurrentMessageClass == ANT_TICK)
     {
-      LedOn(BLUE);
+      
     }
 
     AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
