@@ -138,7 +138,7 @@ void UserApp1Initialize(void)
       /* Channel is configured, so change Led to yellow*/
      LedOff(RED);
      LedOn(YELLOW);
-     UserApp1_StateMachine = UserApp1SM_WaitChannelAssign;
+    // UserApp1_StateMachine = UserApp1SM_WaitChannelAssign;
    }
   // else
    //{
@@ -235,8 +235,6 @@ State Machine Function Definitions
 /* Wait for ANT channel assignment */
 static void UserApp1SM_WaitChannelAssign()
 {
-
-   LedOn(PURPLE);
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP)  == ANT_CONFIGURED)
   {
      /* Channel assignment is successful, so open channel and procede to idle state */
