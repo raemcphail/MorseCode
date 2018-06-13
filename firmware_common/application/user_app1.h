@@ -74,6 +74,8 @@ static void UserApp1SM_ChannelOpen(void);
 static void UserApp1SM_WaitChannelClose(void);
 static void UserApp1SM_WaitChannelAssign(void);
 
+static void UserApp1SM_Master_or_Slave(void);
+
 
 
 #endif /* __USER_APP1_H */

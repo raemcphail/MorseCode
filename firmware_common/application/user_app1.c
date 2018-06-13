@@ -57,7 +57,7 @@ extern AntApplicationMessageType G_eAntApiCurrentMessageClass;
 extern u8 G_au8AntApiCurrentMessageBytes[ANT_APPLICATION_MESSAGE_BYTES];
 extern AntExtendedDataType G_sAntApiCurrentMessageExtData;
 
-
+AntAssignChannelInfoType    sChannelInfo;
 /***********************************************************************************************************************
 Global variable definitions with scope limited to this local application.
 Variable names shall start with "UserApp1_" and be declared as static.
@@ -112,7 +112,7 @@ void UserApp1Initialize(void)
    
    /* Start with LED0 in RED state = channel is not configured */
    LedOn(RED);
-   
+   UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
    /* Configure ANT for this application*/
    UserApp1_sChannelInfo.AntChannel                  =   ANT_CHANNEL_USERAPP;
    UserApp1_sChannelInfo.AntChannelType              =   ANT_CHANNEL_TYPE_USERAPP;
@@ -148,7 +148,6 @@ void UserApp1Initialize(void)
    //}
 
 } /* end UserApp1Initialize() */
-
   
 /*----------------------------------------------------------------------------------------------------------------------
 Function UserApp1RunActiveState()
@@ -171,6 +170,58 @@ void UserApp1RunActiveState(void)
 } /* end UserApp1RunActiveState */
 
 
+/*----------------------------------------------------------------------------------------------------------------------
+Function AntInit()
+
+Description:
+
+Requires:
+
+Promises:
+*/
+static void AntInit(void)
+{
+  sChannelInfo.AntChannel                   = ANT_CHANNEL_USERAPP;
+  sChannelInfo.AntChannelPeriodLo           = ANT_CHANNEL_PERIOD_LO_USERAPP;
+  sChannelInfo.AntChannelPeriodHi           = ANT_CHANNEL_PERIOD_HI_USERAPP;
+  sChannelInfo.AntDeviceIdLo                = ANT_DEVICEID_LO_USERAPP;
+  sChannelInfo.AntDeviceIdHi                = ANT_DEVICEID_HI_USERAPP;
+  sChannelInfo.AntDeviceType                = ANT_DEVICE_TYPE_USERAPP;
+  sChannelInfo.AntTransmissionType          = ANT_TRANSMISSION_TYPE_USERAPP;
+  sChannelInfo.AntFrequency                 = ANT_FREQUENCY_USERAPP;
+  sChannelInfo.AntTxPower                   = ANT_TX_POWER_USERAPP;
+  sChannelInfo.AntNetwork                   = ANT_NETWORK_DEFAULT;
+  
+  sChannelInfo.AntFlags                     = 1;
+  
+  for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
+  {
+    sChannelInfo.AntNetworkKey[i] = ANT_DEFAULT_NETWORK_KEY;
+  }
+} /* end AntInit */
+
+/*----------------------------------------------------------------------------------------------------------------------
+Function AntSlaveConfig()
+
+Description:
+
+Requires:
+
+Promises:
+*/
+static void AntSlaveConfig(void)
+{
+  //TODO
+  AntInit();
+  sChannelInfo.AntChannelType = CHANNEL_TYPE_SLAVE;
+  if(AntAssignChannel(&sChannelInfo))
+  {
+    UserApp1_u32Timeout++;
+    UserApp1_StateMachine = UserApp1SM_WaitChannelAssign;//nathan's said:   UserApp1_StateMachine = UserApp1SM_ANT_ChannelAssign;
+  }
+} /* end AntSlaveConfig */
+
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -184,23 +235,42 @@ State Machine Function Definitions
 /* Wait for ANT channel assignment */
 static void UserApp1SM_WaitChannelAssign()
 {
-  
+
+   LedOn(PURPLE);
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP)  == ANT_CONFIGURED)
   {
-    LedOn(PURPLE);
      /* Channel assignment is successful, so open channel and procede to idle state */
     AntOpenChannelNumber(ANT_CHANNEL_USERAPP);
+    LedOff(GREEN);
     UserApp1_StateMachine = UserApp1SM_Idle;
   }
   
   /* Watch for time out */
-  if(IsTimeUp(&UserApp1_u32Timeout, 3000))
+  if(IsTimeUp(&UserApp1_u32Timeout, 5000))
   {
     //  DebugPrintf(UserApp1_au8MessageFail);
       UserApp1_StateMachine = UserApp1SM_Error;
   }
 }/* end UserApp1SM_AntChannelAssign */
 
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/* Wait for ??? */
+
+static void UserApp1SM_Master_or_Slave (void)
+{
+  if(WasButtonPressed(BUTTON0))
+  {
+    LedOn(GREEN);
+    ButtonAcknowledge(BUTTON0);
+    AntSlaveConfig();
+  }
+  if(WasButtonPressed(BUTTON1))
+  {
+    ButtonAcknowledge(BUTTON1);
+    //AntMasterConfig();
+  }
+}
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 
