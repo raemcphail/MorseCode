@@ -71,7 +71,7 @@ static u32 UserApp1_u32TickMsgCount = 0; /* ANT_TICK packets received */
 
 static u8 u8LastState = 0xff;
 static u8 au8TickMessage[] = "EVENT x\n\r"; /* "x" at index [6] will be replaced by current code */
-static u8 au8DataContent[] = "xxxxxxxxxxxxxxxx";
+static u8 au8DataContent[] = "xxxxxxxx";
 static u8 au8LastAntData [ANT_APPLICATION_MESSAGE_BYTES] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 static u8 au8TestMessage[] = {0, 0, 0, 0, 0xA5, 0, 0, 0};
 bool bGotNewData;
@@ -379,11 +379,21 @@ static void UserApp1SM_ChannelOpen(void)
       LCDMessage(LINE2_START_ADDR, "Hello World");
       for(u8 i = 0; i < 8; i++)
       {
-        au8LastAntData[i] = G_au8AntApiCurrentMessageBytes[i];
-        au8DataContent[2*i] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i] /16);
-        au8DataContent[2*i + 1] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i] %16);
+        if(G_au8AntApiCurrentMessageBytes[i]== 0x01)
+        {
+          au8DataContent[i] = 'A';
+        }
+        else
+        {
+          au8DataContent[i] = 'V';
+        }
+        
+        //au8DataContent[2*i] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i]/16);
+        //au8DataContent[2*i + 1] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i] %16);
       }
-      //LCDCommand(LCD_CLEAR_CMD);
+    
+      
+      LCDCommand(LCD_CLEAR_CMD);
       LCDMessage(LINE2_START_ADDR, au8DataContent);
   
     }/* end if(G_eAntApiCurrentMessageClass == ANT_DATA) */
