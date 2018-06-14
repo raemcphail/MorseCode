@@ -49,6 +49,7 @@ Function Declarations
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
   void AntMasterConfig(void);
+  void AntSlaveConfig(void);
 
   void wasShort(void);
   void wasLong(void);
@@ -101,10 +102,16 @@ State Machine Declarations
 ***********************************************************************************************************************/
 static void UserApp1SM_MasterIdle(void);    
 static void UserApp1SM_Error(void);   
-static void UserApp1SM_AntChannelAssign(void);
+static void UserApp1SM_AntChannelAssignMaster(void);
 static void UserApp1SM_SendAntMessage(void);
 
 static void UserApp1SM_Master_or_Slave(void);
+
+static void UserApp1SM_SlaveIdle(void);
+static void UserApp1SM_AntChannelAssignSlave(void);
+static void UserApp1SM_WaitChannelOpen(void);
+static void UserApp1SM_ChannelOpen(void);
+static void UserApp1SM_WaitChannelClose(void);
 
 #endif /* __USER_APP1_H */
 

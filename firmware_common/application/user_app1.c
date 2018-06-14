@@ -57,6 +57,8 @@ extern AntApplicationMessageType G_eAntApiCurrentMessageClass;
 extern u8 G_au8AntApiCurrentMessageBytes[ANT_APPLICATION_MESSAGE_BYTES];
 extern AntExtendedDataType G_sAntApiCurrentMessageExtData;
 
+AntAssignChannelInfoType        sChannelInfo;
+
 /***********************************************************************************************************************
 Global variable definitions with scope limited to this local application.
 Variable names shall start with "UserApp1_" and be declared as static.
@@ -653,8 +655,8 @@ void UserApp1Initialize(void)
     /* Set a message up on LCD. Delay is required to let the clear command send */
     LCDCommand(LCD_CLEAR_CMD);
     for(u32 i = 0; i < 10000; i++);
-    LCDMessage(LINE1_START_ADDR, "Button 0 for Master");
-    LCDMessage(LINE2_START_ADDR, "Button 1 for Slave");
+    LCDMessage(LINE1_START_ADDR, "Button 3 for Master");
+    LCDMessage(LINE2_START_ADDR, "Button 2 for Slave");
     UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
     
     /* Set counter to 0 to start. Counts number of longs or shorts*/
@@ -738,7 +740,7 @@ void AntMasterConfig(void)
     {
       LedOn(PURPLE);
       UserApp1_u32Timeout = G_u32SystemTime1ms;
-      UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
+      UserApp1_StateMachine = UserApp1SM_AntChannelAssignMaster;
     }
     else
     {
@@ -748,6 +750,60 @@ void AntMasterConfig(void)
     }
 } /* end AntMasterConfig */
 
+/*----------------------------------------------------------------------------------------------------------------------
+Function AntSlaveConfig()
+
+Description:
+
+Requires:
+
+
+Promises:
+
+*/
+void AntSlaveConfig(void)
+{
+  LCDCommand(LCD_CLEAR_CMD);
+  
+  /* Configure ANT for this application */
+    sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
+    sChannelInfo.AntChannelType              = CHANNEL_TYPE_SLAVE;
+    sChannelInfo.AntChannelPeriodLo          = ANT_CHANNEL_PERIOD_LO_USERAPP;
+    sChannelInfo.AntChannelPeriodHi          = ANT_CHANNEL_PERIOD_HI_USERAPP;
+    
+    sChannelInfo.AntDeviceIdLo               = ANT_DEVICEID_LO_USERAPP;
+    sChannelInfo.AntDeviceIdHi               = ANT_DEVICEID_HI_USERAPP;
+    sChannelInfo.AntDeviceType               = ANT_DEVICE_TYPE_USERAPP;
+    sChannelInfo.AntTransmissionType         = ANT_TRANSMISSION_TYPE_USERAPP;
+    sChannelInfo.AntFrequency                = ANT_FREQUENCY_USERAPP;
+    sChannelInfo.AntTxPower                  = ANT_TX_POWER_USERAPP;
+    
+    sChannelInfo.AntFlags                    = 1;
+    
+    for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
+    {
+      sChannelInfo.AntNetworkKey[i]          = ANT_DEFAULT_NETWORK_KEY;
+    }
+    
+    /* Attempt to queue the ant channel setup */
+    if(AntAssignChannel(&sChannelInfo))
+    {
+      UserApp1_u32Timeout = G_u32SystemTime1ms;
+      UserApp1_StateMachine = UserApp1SM_AntChannelAssignSlave;
+      if(UserApp1_u32Timeout == 50000)
+      {
+        LedBlink(RED, LED_4HZ);
+        UserApp1_StateMachine = UserApp1SM_Error;
+      }
+    }
+    else
+    {
+      /* The task ins't properly initialized so shut down and don't run*/
+      //DebugPrinf(UseraApp1_au8MessageFail)
+      LedOn(RED);
+      UserApp1_StateMachine = UserApp1SM_Error;
+    }
+} /* end AntMasterConfig */
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */
@@ -832,22 +888,20 @@ static void UserApp1SM_MasterIdle(void)
 /* Wait for ??? */
 static void UserApp1SM_Master_or_Slave()
 {
-  if(WasButtonPressed(BUTTON0))
+  if(WasButtonPressed(BUTTON3))
   {
-    LedOn(WHITE);
-    ButtonAcknowledge(BUTTON0);
+    ButtonAcknowledge(BUTTON3);
     AntMasterConfig();
   }
-  if(WasButtonPressed(BUTTON1))
+  if(WasButtonPressed(BUTTON2))
   {
-    LedOn(PURPLE);
-    ButtonAcknowledge(BUTTON1);
-    //AntSlaveConfig();
+    ButtonAcknowledge(BUTTON2);
+    AntSlaveConfig();
   }
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ANT channel assignment */
-static void UserApp1SM_AntChannelAssign()
+static void UserApp1SM_AntChannelAssignMaster()
 {
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_CONFIGURED)
   {
@@ -865,65 +919,44 @@ static void UserApp1SM_AntChannelAssign()
 }/* end UserApp1SM_AntChannelAssign() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
-/* Wait for ANT channel to be assigned */
-static void UserApp1SM_SendAntMessage()
+/* Wait for ANT channel assignment */
+static void UserApp1SM_AntChannelAssignSlave()
 {
+  if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP)== ANT_CONFIGURED)
+  {
+    /* Channel assignment is sucessful, so open channel and procede*/
+    AntOpenChannelNumber(ANT_CHANNEL_USERAPP);
+    UserApp1_StateMachine = UserApp1SM_SlaveIdle;
+  }
   
- if(IsButtonPressed(BUTTON0))
+  /* Watch for time out */
+  if(IsTimeUp(&UserApp1_u32Timeout, 50000))
   {
-   for(int i = 0; i < 8; i++)
-    {
-      au8TestMessage[i] = 0x77;
-    }
+    UserApp1_StateMachine = UserApp1SM_Error;
   }
- else if(IsButtonPressed(BUTTON1))
- {
-     au8TestMessage[0] = 0x00;
-     au8TestMessage[1] = 0x11;
-     au8TestMessage[2] = 0x22;
-     au8TestMessage[3] = 0x33;
-     au8TestMessage[4] = 0x44;
-     au8TestMessage[5] = 0x55;
-     au8TestMessage[6] = 0x66;
-     au8TestMessage[7] = 0x77;
-     
- }
-  else if(IsButtonPressed(BUTTON2))
- {
-     au8TestMessage[0] = 0x00;
-     au8TestMessage[1] = 0x10;
-     au8TestMessage[2] = 0x20;
-     au8TestMessage[3] = 0x30;
-     au8TestMessage[4] = 0x40;
-     au8TestMessage[5] = 0x50;
-     au8TestMessage[6] = 0x60;
-     au8TestMessage[7] = 0x70;
-     
- }
- else
-  {
-    for(int i = 0; i < 8; i++)
-    {
-      au8TestMessage[i] = 0x00;
-    }
-  }
+}/* end UserApp1SM_AntChannelAssignSlave() */
 
-  if(AntReadAppMessageBuffer())
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ANT channel assignment */
+static void UserApp1SM_SlaveIdle()
+{
+  /* Look at BUTTON0 to open channel */
+  if(WasButtonPressed(BUTTON0))
   {
-    /* new message from ANT task: check what it is */
-    if(G_eAntApiCurrentMessageClass == ANT_DATA)
-    {
-      
-    }
-    else if(G_eAntApiCurrentMessageClass == ANT_TICK)
-    {
-      
-    }
-
-    AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
-  }/* end AntReadAppMessageBuffer */
+    /* Got the button so complete one-time actions before next state */
+    ButtonAcknowledge(BUTTON0);
     
-}/* end UserApp1SM_SendAntMessage() */
+    /* Queue open channel and change LED0 from yellow to blinking green to indicate channel opening */
+    AntOpenChannelNumber(ANT_CHANNEL_USERAPP);
+    LedOff(YELLOW);
+    LedBlink(GREEN, LED_2HZ);
+    
+    /* Set timer and advance states */
+    UserApp1_u32Timeout = G_u32SystemTime1ms;
+   // UserApp1_StateMachine = UserApp1SM_WaitChannelOpen;
+  }
+}/* end UserApp1SM_SlaveIdle() */
+
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Handle an error */
 static void UserApp1SM_Error(void)          
