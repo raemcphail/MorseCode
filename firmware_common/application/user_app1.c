@@ -328,7 +328,6 @@ static void UserApp1SM_WaitChannelOpen(void)
 /* Wait for */
 static void UserApp1SM_ChannelOpen(void)
 {
-
   /* Check for BUTTON0 to close channel */
   if(WasButtonPressed(BUTTON0))
   {
@@ -376,32 +375,17 @@ static void UserApp1SM_ChannelOpen(void)
       /* Check if the new data is the same as the old data
          and update as we go*/
       bGotNewData = FALSE;
-      for(u8 i = 0; i < ANT_APPLICATION_MESSAGE_BYTES; i++)
+      LCDCommand(LCD_CLEAR_CMD);
+      LCDMessage(LINE2_START_ADDR, "Hello World");
+      for(u8 i = 0; i < 8; i++)
       {
-        if(G_au8AntApiCurrentMessageBytes[i] != au8LastAntData[i])
-        {
-          bGotNewData = TRUE;
-          au8LastAntData[i] = G_au8AntApiCurrentMessageBytes[i];
-        }
+        au8LastAntData[i] = G_au8AntApiCurrentMessageBytes[i];
+        au8DataContent[2*i] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i] /16);
+        au8DataContent[2*i + 1] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[i] %16);
       }
-        if(bGotNewData)
-        {
-          /* We got new data: show on LCD */
-          LCDClearChars(LINE2_START_ADDR, 20);
-          LCDMessage(LINE2_START_ADDR, au8DataContent);
-          
-          /* Update our local message counter and send the message back */
-          au8TestMessage[7]++;
-          if(au8TestMessage[7] == 0)
-          {
-            au8TestMessage[6]++;
-            if(au8TestMessage[6] == 0)
-            {
-              au8TestMessage[5]++;
-            }
-          }
-          AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
-        }/* end if (bGotNewData)*/
+      //LCDCommand(LCD_CLEAR_CMD);
+      LCDMessage(LINE2_START_ADDR, au8DataContent);
+  
     }/* end if(G_eAntApiCurrentMessageClass == ANT_DATA) */
     
     
