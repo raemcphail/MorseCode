@@ -650,14 +650,16 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-    u8 au8WelcomeMessage[] = "AntMaster";
     /* Set a message up on LCD. Delay is required to let the clear command send */
     LCDCommand(LCD_CLEAR_CMD);
     for(u32 i = 0; i < 10000; i++);
-    LCDMessage(LINE1_START_ADDR, au8WelcomeMessage);
+    LCDMessage(LINE1_START_ADDR, "Button 0 for Master");
+    LCDMessage(LINE2_START_ADDR, "Button 1 for Slave");
+    UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
+    
     
     /* Configure ANT for this application */
-    UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
+   /* UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
     UserApp1_sChannelInfo.AntChannelType              = ANT_CHANNEL_TYPE_USERAPP;
     UserApp1_sChannelInfo.AntChannelPeriodLo          = ANT_CHANNEL_PERIOD_LO_USERAPP;
     UserApp1_sChannelInfo.AntChannelPeriodHi          = ANT_CHANNEL_PERIOD_HI_USERAPP;
@@ -673,26 +675,24 @@ void UserApp1Initialize(void)
     for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
     {
       UserApp1_sChannelInfo.AntNetworkKey[i]          = ANT_DEFAULT_NETWORK_KEY;
-    }
+    }*/
     
     /* Attempt to queue the ant channel setup */
     if(AntAssignChannel(&UserApp1_sChannelInfo))
     {
       UserApp1_u32Timeout = G_u32SystemTime1ms;
-      UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
+     // UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
     }
     else
     {
       /* The task ins't properly initialized so shut down and don't run*/
       //DebugPrinf(UseraApp1_au8MessageFail)
-      UserApp1_StateMachine = UserApp1SM_Error;
+      //UserApp1_StateMachine = UserApp1SM_Error;
     }
     /* Set counter to 0 to start. Counts number of longs or shorts*/
     static u16 u16countTaps;
    /* Set counter to 0 to start. Counts number of letters*/
     static u16 u16countLetter; 
-   /* Intially clears the LCD*/
-    LCDCommand(LCD_CLEAR_CMD);
    /* Set counter to 0 to start. Counts to 300ms*/
    u16countTapTime = 0;
    /* Set counter to 0 to start. Counts to 300ms*/
@@ -811,7 +811,23 @@ static void UserApp1SM_Idle(void)
    
 } /* end UserApp1SM_Idle() */
     
-
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ??? */
+static void UserApp1SM_Master_or_Slave()
+{
+  if(WasButtonPressed(BUTTON0))
+  {
+    LedOn(WHITE);
+    ButtonAcknowledge(BUTTON0);
+    //AntMasterConfig();
+  }
+  if(WasButtonPressed(BUTTON1))
+  {
+    LedOn(PURPLE);
+    ButtonAcknowledge(BUTTON1);
+    //AntSlaveConfig();
+  }
+}
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ANT channel assignment */
 static void UserApp1SM_AntChannelAssign()

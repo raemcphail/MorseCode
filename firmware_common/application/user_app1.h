@@ -101,7 +101,7 @@ static void UserApp1SM_Error(void);
 static void UserApp1SM_AntChannelAssign(void);
 static void UserApp1SM_SendAntMessage(void);
 
-
+static void UserApp1SM_Master_or_Slave(void);
 
 #endif /* __USER_APP1_H */
 
