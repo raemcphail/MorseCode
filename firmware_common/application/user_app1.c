@@ -940,6 +940,8 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
+  LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
+  LCDMessage(LINE2_START_ADDR, "Connect Channel");
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
   {
