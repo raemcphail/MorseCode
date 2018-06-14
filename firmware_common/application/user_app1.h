@@ -33,10 +33,10 @@ Constants / Definitions
 #define ANT_CHANNEL_USERAPP                   ANT_CHANNEL_0             //  Channel 0 -7
 #define ANT_CHANNEL_PERIOD_LO_USERAPP         (u8) 0x00                 //  LO; 0x0001-0x7fff
 #define ANT_CHANNEL_PERIOD_HI_USERAPP         (u8) 0x20                 //  HI; 0x0001-0x7fff
-#define ANT_DEVICEID_LO_USERAPP               (u8) 0                 //  Device # Low byte
-#define ANT_DEVICEID_HI_USERAPP               (u8) 0                 //  Device # High byte
+#define ANT_DEVICEID_LO_USERAPP               (u8) 0x34                 //  Device # Low byte
+#define ANT_DEVICEID_HI_USERAPP               (u8) 0x12                 //  Device # High byte
 #define ANT_DEVICE_TYPE_USERAPP               (u8) 1                    //  1-255
-#define ANT_TRANSMISSION_TYPE_USERAPP         (u8) 0                    //  1-127; MSB is pairing
+#define ANT_TRANSMISSION_TYPE_USERAPP         (u8) 1                    //  1-127; MSB is pairing
 #define ANT_FREQUENCY_USERAPP                 (u8) 50                   //  2400MHz + 0 -99 MHz
 #define ANT_TX_POWER_USERAPP                   RADIO_TX_POWER_4DBM      //  Max tx power
 

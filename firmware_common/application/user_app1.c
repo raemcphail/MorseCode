@@ -111,10 +111,9 @@ void UserApp1Initialize(void)
    LCDMessage(LINE2_START_ADDR, au8Instructions);
    
    /* Start with LED0 in RED state = channel is not configured */
-   LedOn(RED);
    UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
    /* Configure ANT for this application*/
-   UserApp1_sChannelInfo.AntChannel                  =   ANT_CHANNEL_USERAPP;
+   /*UserApp1_sChannelInfo.AntChannel                  =   ANT_CHANNEL_USERAPP;
    UserApp1_sChannelInfo.AntChannelType              =   ANT_CHANNEL_TYPE_USERAPP;
    UserApp1_sChannelInfo.AntChannelPeriodLo          =   ANT_CHANNEL_PERIOD_LO_USERAPP;
    UserApp1_sChannelInfo.AntChannelPeriodHi          =   ANT_CHANNEL_PERIOD_HI_USERAPP;
@@ -130,16 +129,15 @@ void UserApp1Initialize(void)
    for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
    {
       sAntSetupData.AntNetworkKey[i] = ANT_DEFAULT_NETWORK_KEY;
-   }
+   }*/
    
    /* Attempt to queue the ANT channel setup */
-   if(AntAssignChannel(&sAntSetupData))
-   {
+  // if(AntAssignChannel(&sAntSetupData))
+   //{
       /* Channel is configured, so change Led to yellow*/
-     LedOff(RED);
-     LedOn(YELLOW);
+     //LedOn(YELLOW);
     // UserApp1_StateMachine = UserApp1SM_WaitChannelAssign;
-   }
+   //}
   // else
    //{
       /* The task isn't properly intialized, so shut down and don't run */
@@ -211,13 +209,22 @@ Promises:
 */
 static void AntSlaveConfig(void)
 {
-  //TODO
   AntInit();
   sChannelInfo.AntChannelType = CHANNEL_TYPE_SLAVE;
   if(AntAssignChannel(&sChannelInfo))
   {
     UserApp1_u32Timeout++;
     UserApp1_StateMachine = UserApp1SM_WaitChannelAssign;//nathan's said:   UserApp1_StateMachine = UserApp1SM_ANT_ChannelAssign;
+      if(UserApp1_u32Timeout == 5000)
+      {
+        LedBlink(RED, LED_4HZ);
+        UserApp1_StateMachine = UserApp1SM_Error;
+      }
+  }
+  else
+  {
+      LedOn(RED);
+      UserApp1_StateMachine = UserApp1SM_Error;
   }
 } /* end AntSlaveConfig */
 
@@ -290,7 +297,6 @@ static void UserApp1SM_Idle(void)
     /* Set timer and advance states */
     UserApp1_u32Timeout = G_u32SystemTime1ms;
     UserApp1_StateMachine = UserApp1SM_WaitChannelOpen;
-    
   }
 } /* end UserApp1SM_Idle() */
     
@@ -322,6 +328,7 @@ static void UserApp1SM_WaitChannelOpen(void)
 /* Wait for */
 static void UserApp1SM_ChannelOpen(void)
 {
+
   /* Check for BUTTON0 to close channel */
   if(WasButtonPressed(BUTTON0))
   {
