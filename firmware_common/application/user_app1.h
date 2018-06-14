@@ -40,6 +40,7 @@ Constants / Definitions
 #define ANT_FREQUENCY_USERAPP             (u8)50                    // 2400MHz + 0 - 99 MHz
 #define ANT_TX_POWER_USERAPP              RADIO_TX_POWER_4DBM       // Max tx Power
 
+#define TIMEOUT_VALUE                     (u8) 30000 
 /**********************************************************************************************************************
 Function Declarations
 **********************************************************************************************************************/

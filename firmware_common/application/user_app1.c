@@ -657,38 +657,6 @@ void UserApp1Initialize(void)
     LCDMessage(LINE2_START_ADDR, "Button 1 for Slave");
     UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
     
-    
-    /* Configure ANT for this application */
-   /* UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
-    UserApp1_sChannelInfo.AntChannelType              = ANT_CHANNEL_TYPE_USERAPP;
-    UserApp1_sChannelInfo.AntChannelPeriodLo          = ANT_CHANNEL_PERIOD_LO_USERAPP;
-    UserApp1_sChannelInfo.AntChannelPeriodHi          = ANT_CHANNEL_PERIOD_HI_USERAPP;
-    
-    UserApp1_sChannelInfo.AntDeviceIdLo               = ANT_DEVICEID_LO_USERAPP;
-    UserApp1_sChannelInfo.AntDeviceIdHi               = ANT_DEVICEID_HI_USERAPP;
-    UserApp1_sChannelInfo.AntDeviceType               = ANT_DEVICE_TYPE_USERAPP;
-    UserApp1_sChannelInfo.AntTransmissionType         = ANT_TRANSMISSION_TYPE_USERAPP;
-    UserApp1_sChannelInfo.AntFrequency                = ANT_FREQUENCY_USERAPP;
-    UserApp1_sChannelInfo.AntTxPower                  = ANT_TX_POWER_USERAPP;
-    
-    UserApp1_sChannelInfo.AntNetwork                  = ANT_NETWORK_DEFAULT;
-    for(u8 i = 0; i < ANT_NETWORK_NUMBER_BYTES; i++)
-    {
-      UserApp1_sChannelInfo.AntNetworkKey[i]          = ANT_DEFAULT_NETWORK_KEY;
-    }*/
-    
-    /* Attempt to queue the ant channel setup */
-    if(AntAssignChannel(&UserApp1_sChannelInfo))
-    {
-      UserApp1_u32Timeout = G_u32SystemTime1ms;
-     // UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
-    }
-    else
-    {
-      /* The task ins't properly initialized so shut down and don't run*/
-      //DebugPrinf(UseraApp1_au8MessageFail)
-      //UserApp1_StateMachine = UserApp1SM_Error;
-    }
     /* Set counter to 0 to start. Counts number of longs or shorts*/
     static u16 u16countTaps;
    /* Set counter to 0 to start. Counts number of letters*/
@@ -745,6 +713,7 @@ Promises:
 void AntMasterConfig(void)
 {
   LCDCommand(LCD_CLEAR_CMD);
+  
   /* Configure ANT for this application */
     UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
     UserApp1_sChannelInfo.AntChannelType              = ANT_CHANNEL_TYPE_USERAPP;
@@ -767,6 +736,7 @@ void AntMasterConfig(void)
     /* Attempt to queue the ant channel setup */
     if(AntAssignChannel(&UserApp1_sChannelInfo))
     {
+      LedOn(PURPLE);
       UserApp1_u32Timeout = G_u32SystemTime1ms;
       UserApp1_StateMachine = UserApp1SM_AntChannelAssign;
     }
