@@ -47,6 +47,8 @@ Function Declarations
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
+  void AntMasterConfig(void);
+
   void wasShort(void);
   void wasLong(void);
   void checkTime(void);
@@ -96,7 +98,7 @@ void UserApp1RunActiveState(void);
 /***********************************************************************************************************************
 State Machine Declarations
 ***********************************************************************************************************************/
-static void UserApp1SM_Idle(void);    
+static void UserApp1SM_MasterIdle(void);    
 static void UserApp1SM_Error(void);   
 static void UserApp1SM_AntChannelAssign(void);
 static void UserApp1SM_SendAntMessage(void);
