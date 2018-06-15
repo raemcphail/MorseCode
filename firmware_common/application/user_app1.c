@@ -65,7 +65,7 @@ Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-static u8 au8TestMessage[] = {0, 0, 0, 0, 0, 0, 0, 0};
+static u8 au8TestMessage[] = {0, 0, 0, 0, 0, 0, 0};
 AntAssignChannelInfoType UserApp1_sChannelInfo;
 
 static u16 u16countTapTime;
@@ -941,8 +941,8 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
-  //LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
-  //LCDMessage(LINE2_START_ADDR, "Connect Channel");
+ // LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
+ // LCDMessage(LINE2_START_ADDR, "Connect Channel");
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
   {
@@ -966,6 +966,8 @@ static void UserApp1SM_SlaveIdle()
 static void UserApp1SM_WaitChannelOpen()
 {
   //LCDCommand(LCD_CLEAR_CMD);
+  LCDMessage(LINE1_START_ADDR, "Waiting");
+  
   
   /* Monitor the channel status to check if channel is opened */
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_OPEN)
@@ -1020,19 +1022,115 @@ static void UserApp1SM_ChannelOpen()
       LedOn(BLUE);
       
       /* Check if the data is a letter */
-      for(u8 i = 0; i < 8; i++)
+      for(u8 i = 0; i < 7; i++)
       {
         if(G_au8AntApiCurrentMessageBytes[i] == 0x01)
         {
           au8DataContent[i] = 'A';
         }
-        if(G_au8AntApiCurrentMessageBytes[i] == 0x02)
+       else if(G_au8AntApiCurrentMessageBytes[i] == 0x02)
         {
           au8DataContent[i] = 'B';
         }
-        else
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x03)
+        {
+          au8DataContent[i] = 'C';
+        }
+         else if(G_au8AntApiCurrentMessageBytes[i] == 0x04)
+        {
+          au8DataContent[i] = 'D';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x05)
+        {
+          au8DataContent[i] = 'E';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x06)
+        {
+          au8DataContent[i] = 'F';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x07)
+        {
+          au8DataContent[i] = 'G';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x08)
+        {
+          au8DataContent[i] = 'H';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x09)
+        {
+          au8DataContent[i] = 'I';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x10)
+        {
+          au8DataContent[i] = 'J';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x11)
+        {
+          au8DataContent[i] = 'K';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x12)
+        {
+          au8DataContent[i] = 'L';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x13)
+        {
+          au8DataContent[i] = 'M';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x14)
+        {
+          au8DataContent[i] = 'N';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x15)
+        {
+          au8DataContent[i] = 'O';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x16)
+        {
+          au8DataContent[i] = 'P';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x17)
+        {
+          au8DataContent[i] = 'Q';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x18)
+        {
+          au8DataContent[i] = 'R';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x19)
+        {
+          au8DataContent[i] = 'S';
+        }  
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x20)
+        {
+          au8DataContent[i] = 'T';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x21)
+        {
+          au8DataContent[i] = 'U';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x22)
         {
           au8DataContent[i] = 'V';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x23)
+        {
+          au8DataContent[i] = 'W';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x24)
+        {
+          au8DataContent[i] = 'X';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x25)
+        {
+          au8DataContent[i] = 'Y';
+        }
+        else if(G_au8AntApiCurrentMessageBytes[i] == 0x26)
+        {
+          au8DataContent[i] = 'Z';
+        }
+        else
+        {
+          au8DataContent[i] = ' ';
         }
       }
       
