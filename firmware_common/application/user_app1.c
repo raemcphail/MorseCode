@@ -965,24 +965,30 @@ static void UserApp1SM_SlaveIdle()
 static void UserApp1SM_WaitChannelOpen()
 {
   LCDCommand(LCD_CLEAR_CMD);
-  LedOn(PURPLE);
   
   /* Monitor the channel status to check if channel is opened */
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_OPEN)
   {
-    LedOn(PURPLE);
     LedOn(GREEN);
-    //UserApp1_StateMachine = UserApp1SM_ChannelOpen;
+    UserApp1_StateMachine = UserApp1SM_ChannelOpen;
   }
   
   /* Check for timeout */
-  if(IsTimeUp(&UserApp1_u32Timeout, TIMEOUT_VALUE))
+  if(IsTimeUp(&UserApp1_u32Timeout, 500000))
   {
     AntCloseChannelNumber(ANT_CHANNEL_USERAPP);
     LedOff(GREEN);
     LedOn(YELLOW);
     UserApp1_StateMachine = UserApp1SM_SlaveIdle;
   }
+}/* end UserApp1SM_WaitChannelOpen() */
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ANT channel assignment */
+static void UserApp1SM_ChannelOpen()
+{
+  LCDCommand(LCD_CLEAR_CMD);
+  LedOn(PURPLE);
 }/* end UserApp1SM_WaitChannelOpen() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
