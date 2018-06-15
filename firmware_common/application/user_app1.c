@@ -73,7 +73,8 @@ static u16 u16countSpaceTime;
 static u8 au8Taps[] = "";
 //static u8 au8Message[] = "";
 static u16 u16countTaps;
-static u16 u16countLetter; 
+static u16 u16countLetter;
+static u8  au8DataContent[] = {0, 0, 0, 0, 0, 0, 0, 0};
   
 /**********************************************************************************************************************
 Function Definitions
@@ -940,8 +941,8 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
-  LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
-  LCDMessage(LINE2_START_ADDR, "Connect Channel");
+  //LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
+  //LCDMessage(LINE2_START_ADDR, "Connect Channel");
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
   {
@@ -964,7 +965,7 @@ static void UserApp1SM_SlaveIdle()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_WaitChannelOpen()
 {
-  LCDCommand(LCD_CLEAR_CMD);
+  //LCDCommand(LCD_CLEAR_CMD);
   
   /* Monitor the channel status to check if channel is opened */
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_OPEN)
@@ -987,8 +988,58 @@ static void UserApp1SM_WaitChannelOpen()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_ChannelOpen()
 {
-  LCDCommand(LCD_CLEAR_CMD);
   LedOn(PURPLE);
+  /* Check for BUTTON0 to close chnnel */
+  if(WasButtonPressed(BUTTON0))
+  {
+    /* Got the button, so complete one-time actions before next state */
+    ButtonAcknowledge(BUTTON0);
+    
+    /* Queue close channel, change LED to blinking green to indicate channel closing */
+    AntCloseChannelNumber(ANT_CHANNEL_USERAPP);
+    //u8LastState = 0xff
+    LedOff(YELLOW);
+    LedOff(BLUE);
+    LedBlink(GREEN, LED_2HZ);
+    
+    /* Set timer and advance states */
+    UserApp1_u32Timeout = G_u32SystemTime1ms;
+   // UserApp1_StateMachine = UserApp1SM_WaitChannelClose;
+  } /* end if (WasButtonPressed(BUTTON0)) */
+  
+  /* Always check for ANT messages */
+  if(AntReadAppMessageBuffer())
+  {
+    /* New data message: check what it is */
+    if(G_eAntApiCurrentMessageClass == ANT_DATA)
+    {
+      //UserApp1_u32DataMsgCount++;
+      
+      /* We synced with a device, blue is solid */
+      LedOff(GREEN);
+      LedOn(BLUE);
+      
+      /* Check if the data is a letter */
+      for(u8 i = 0; i < 8; i++)
+      {
+        if(G_au8AntApiCurrentMessageBytes[i] == 0x01)
+        {
+          au8DataContent[i] = 'A';
+        }
+        if(G_au8AntApiCurrentMessageBytes[i] == 0x02)
+        {
+          au8DataContent[i] = 'B';
+        }
+        else
+        {
+          au8DataContent[i] = 'V';
+        }
+      }
+      
+      LCDCommand(LCD_CLEAR_CMD);
+      LCDMessage(LINE2_START_ADDR, au8DataContent);
+     }
+  }
 }/* end UserApp1SM_WaitChannelOpen() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
