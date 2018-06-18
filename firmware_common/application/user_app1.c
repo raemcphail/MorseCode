@@ -1022,7 +1022,7 @@ static void UserApp1SM_ChannelOpen()
       LedOn(BLUE);
       
       /* Check if the data is a letter */
-      for(u8 i = 0; i < 7; i++)
+      for(u8 i = 0; i < 8; i++)
       {
         if(G_au8AntApiCurrentMessageBytes[i] == 0x01)
         {
