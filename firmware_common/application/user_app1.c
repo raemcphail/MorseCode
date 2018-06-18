@@ -746,9 +746,7 @@ Promises:
 
 */
 void AntMasterConfig(void)
-{
-  LCDCommand(LCD_CLEAR_CMD);
-  
+{ 
   /* Configure ANT for this application */
     UserApp1_sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
     UserApp1_sChannelInfo.AntChannelType              = ANT_CHANNEL_TYPE_USERAPP;
@@ -795,9 +793,7 @@ Promises:
 
 */
 void AntSlaveConfig(void)
-{
-  LCDCommand(LCD_CLEAR_CMD);
-  
+{ 
   /* Configure ANT for this application */
     sChannelInfo.AntChannel                  = ANT_CHANNEL_USERAPP;
     sChannelInfo.AntChannelType              = CHANNEL_TYPE_SLAVE;
@@ -974,9 +970,17 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
+  
+  LCDClearChars(LINE1_START_ADDR, 20);
+  LCDClearChars(LINE2_START_ADDR, 20);
+  for(u32 i = 0; i < 150000; i++);
+  LCDMessage(LINE1_START_ADDR, "Press Button 0");
+  for(u32 i = 0; i < 10000; i++);
+  LCDMessage(LINE2_START_ADDR, "to connect");
+  for(u32 i = 0; i < 10000; i++);
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
-  {
+  {  
     /* Got the button so complete one-time actions before next state */
     ButtonAcknowledge(BUTTON0);
     
@@ -987,7 +991,7 @@ static void UserApp1SM_SlaveIdle()
     
     /* Set timer and advance states */
     UserApp1_u32Timeout = G_u32SystemTime1ms;
-    UserApp1_StateMachine = UserApp1SM_WaitChannelOpen;
+    //UserApp1_StateMachine = UserApp1SM_WaitChannelOpen;
   }
 }/* end UserApp1SM_SlaveIdle() */
 
@@ -999,7 +1003,6 @@ static void UserApp1SM_WaitChannelOpen()
   LCDCommand(LCD_CLEAR_CMD);
   for(int i = 0; i<10000; i++);
   LCDMessage(LINE1_START_ADDR, "Waiting");
-  
   
   /* Monitor the channel status to check if channel is opened */
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_OPEN)
@@ -1051,7 +1054,7 @@ static void UserApp1SM_ChannelOpen()
       /* We synced with a device, blue is solid */
       LCDCommand(LCD_CLEAR_CMD);
       for(int i = 0; i<10000; i++);
-      LCDMessage(LINE1_START_ADDR, "Connected");
+      LCDMessage(LINE1_START_ADDR, "Message received:");
       LedOff(GREEN);
       LedOn(BLUE);
       
