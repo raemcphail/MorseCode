@@ -93,6 +93,7 @@ void wasE(void)
   if(au8Taps[0] == '.')
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "E");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x05;
     u16countLetter++;
   }
@@ -109,6 +110,7 @@ void wasT(void)
   if(au8Taps[0] == '-')
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "T");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x20;
     u16countLetter++;
   }
@@ -125,6 +127,7 @@ void wasA(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "A");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x01;
     u16countLetter++;
   }
@@ -140,6 +143,7 @@ void wasI(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "I");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x09;
     u16countLetter++;
   }
@@ -156,6 +160,7 @@ void wasM(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "M");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x13;
     u16countLetter++;
   }
@@ -171,6 +176,7 @@ void wasN(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "N");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x14;
     u16countLetter++;
   }
@@ -186,6 +192,7 @@ void wasD(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "D");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x04;
     u16countLetter++;
   }
@@ -201,6 +208,7 @@ void wasG(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "G");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x07;
     u16countLetter++;
   }
@@ -216,6 +224,7 @@ void wasK(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "K");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x11;
     u16countLetter++;
   }
@@ -231,6 +240,7 @@ void wasO(void)
   if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "O");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x15;
     u16countLetter++;
   }
@@ -246,6 +256,7 @@ void wasR(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "R");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x18;
     u16countLetter++;
   }
@@ -261,6 +272,7 @@ void wasS(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "S");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x19;
     u16countLetter++;
   }
@@ -276,6 +288,7 @@ void wasU(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "U");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x21;
     u16countLetter++;
   }
@@ -291,6 +304,7 @@ void wasW(void)
   if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "W");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x23;
     u16countLetter++;
   }
@@ -306,6 +320,7 @@ void wasB(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "B");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x02;
     u16countLetter++;
   }
@@ -321,6 +336,7 @@ void wasC(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "C");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x03;
     u16countLetter++;
   }
@@ -336,6 +352,7 @@ void wasF(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "F");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x06;
     u16countLetter++;
   }
@@ -351,6 +368,7 @@ void wasH(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "H");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x08;
     u16countLetter++;
   }
@@ -366,6 +384,7 @@ void wasJ(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "J");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x10;
     u16countLetter++;
   }
@@ -381,6 +400,7 @@ void wasL(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "L");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x12;
     u16countLetter++;
   }
@@ -396,6 +416,7 @@ void wasP(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '-')&&(au8Taps[2] == '-')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "P");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x16;
     u16countLetter++;
   }
@@ -411,6 +432,7 @@ void wasQ(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Q");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x17;
     u16countLetter++;
   }
@@ -426,6 +448,7 @@ void wasV(void)
   if((au8Taps[0] == '.')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "V");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x22;
     u16countLetter++;
   }
@@ -441,6 +464,7 @@ void wasX(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '.')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "X");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x24;
     u16countLetter++;
   }
@@ -456,6 +480,7 @@ void wasY(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '.')&&(au8Taps[2] == '-')&&(au8Taps[3] == '-'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Y");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x25;
     u16countLetter++;
   }
@@ -471,6 +496,7 @@ void wasZ(void)
   if((au8Taps[0] == '-')&&(au8Taps[1] == '-')&&(au8Taps[2] == '.')&&(au8Taps[3] == '.'))
   {
     LCDMessage(LINE2_START_ADDR + u16countLetter, "Z");
+    for(int i = 0; i<10000; i++);
     au8TestMessage[u16countLetter] = 0x26;
     u16countLetter++;
   }
@@ -484,7 +510,9 @@ Determines if tap was short
 void wasShort(void)
 {
   LedOn(GREEN);
-  LCDMessage(LINE1_START_ADDR + u16countTaps, ".                   ");
+  LCDMessage(LINE1_START_ADDR + u16countTaps, ".");
+  LCDClearChars(LINE1_START_ADDR + (u16countTaps + 1), 20);
+  for(int i = 0; i<10000; i++);
   au8Taps[u16countTaps] = '.';
   u16countTaps++;
   if(u16countTaps >= 6)
@@ -502,7 +530,9 @@ Determines if tap was long
 void wasLong(void)
 {
   LedOn(RED);
-  LCDMessage(LINE1_START_ADDR + u16countTaps, "-                          ");
+  LCDMessage(LINE1_START_ADDR + u16countTaps, "-");
+  LCDClearChars(LINE1_START_ADDR + (u16countTaps + 1), 20);
+  for(int i = 0; i<10000; i++);
   au8Taps[u16countTaps] = '-';
   u16countTaps++;
   if(u16countTaps >=6)
@@ -583,6 +613,7 @@ void deleteLetter(void)
     u16countLetter--;
   }
   LCDMessage(LINE2_START_ADDR + u16countLetter, " ");
+  for(int i = 0; i<10000; i++);
   au8TestMessage[u16countLetter] = 0x00;
   au8Taps[u16countTaps] = ' ';
 }
@@ -875,6 +906,7 @@ static void UserApp1SM_MasterIdle(void)
   if(WasButtonPressed(BUTTON3))
   {
     LCDCommand(LCD_CLEAR_CMD);
+    for(int i = 0; i<10000; i++);
     for(int i = 0; i < 8; i++)
     {
       au8TestMessage[i] = 0x00;
@@ -964,7 +996,8 @@ static void UserApp1SM_SlaveIdle()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_WaitChannelOpen()
 {
-  //LCDCommand(LCD_CLEAR_CMD);
+  LCDCommand(LCD_CLEAR_CMD);
+  for(int i = 0; i<10000; i++);
   LCDMessage(LINE1_START_ADDR, "Waiting");
   
   
@@ -989,7 +1022,6 @@ static void UserApp1SM_WaitChannelOpen()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_ChannelOpen()
 {
-  LedOn(PURPLE);
   /* Check for BUTTON0 to close chnnel */
   if(WasButtonPressed(BUTTON0))
   {
@@ -1017,6 +1049,9 @@ static void UserApp1SM_ChannelOpen()
       //UserApp1_u32DataMsgCount++;
       
       /* We synced with a device, blue is solid */
+      LCDCommand(LCD_CLEAR_CMD);
+      for(int i = 0; i<10000; i++);
+      LCDMessage(LINE1_START_ADDR, "Connected");
       LedOff(GREEN);
       LedOn(BLUE);
       
@@ -1133,7 +1168,8 @@ static void UserApp1SM_ChannelOpen()
         }
       }
       
-      LCDCommand(LCD_CLEAR_CMD);
+     // LCDCommand(LCD_CLEAR_CMD);
+      for(int i = 0; i<10000; i++);
       LCDMessage(LINE2_START_ADDR, au8DataContent);
      }
   }
