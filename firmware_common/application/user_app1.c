@@ -558,6 +558,7 @@ void wasLetter(void)
     wasZ();
   }
   
+  
   if(u16countLetter >= 8)
   {
     u16countLetter = 0;
@@ -941,8 +942,6 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
- // LCDMessage(LINE1_START_ADDR, "Pressed Button 0 to");
- // LCDMessage(LINE2_START_ADDR, "Connect Channel");
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
   {
@@ -977,7 +976,7 @@ static void UserApp1SM_WaitChannelOpen()
   }
   
   /* Check for timeout */
-  if(IsTimeUp(&UserApp1_u32Timeout, 500000))
+  if(IsTimeUp(&UserApp1_u32Timeout, 50000))
   {
     AntCloseChannelNumber(ANT_CHANNEL_USERAPP);
     LedOff(GREEN);
