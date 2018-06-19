@@ -682,9 +682,13 @@ void wasMessage(void)
      (G_au8AntApiCurrentMessageBytes[6] == 0x00) && (G_au8AntApiCurrentMessageBytes[7] == 0x00)
     )
   {
+    UserApp1_StateMachine = UserApp1SM_CorrectMessage;
     LCDCommand(LCD_CLEAR_CMD);
     for(int i = 0; i < 10000; i++); 
-    UserApp1_StateMachine = UserApp1SM_CorrectMessage;
+    LCDMessage(LINE1_START_ADDR, "Take me to leader");
+    LCDMessage(LINE2_START_ADDR + 8, "is correct!");
+    for(int i = 0; i < 10000; i++);
+  
   }
 }
 /* end of checkTime*/
@@ -1209,9 +1213,7 @@ static void UserApp1SM_ChannelOpen()
 static void UserApp1SM_CorrectMessage()
 {
   LedOn(ORANGE);
-  //LCDMessage(LINE1_START_ADDR, "Correct Message");
-  for(int i = 0; i < 10000; i++);
-  LCDMessage(LINE2_START_ADDR, "Take me to leader");
+
   for(int i = 0; i < 10000; i++);
   
 }/* end UserApp1SM_CorrectMessage() */
