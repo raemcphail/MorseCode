@@ -71,9 +71,6 @@ AntAssignChannelInfoType UserApp1_sChannelInfo;
 static u16 u16countTapTime;
 static u16 u16countSpaceTime;
 static u8 au8Taps[] = "";
-//static u8 au8Message[] = "";
-static u16 u16countTaps;
-static u16 u16countLetter;
 static u8  au8DataContent[] = {0, 0, 0, 0, 0, 0, 0, 0};
 static u16 u16countSound;
   
@@ -84,44 +81,9 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*------------------------------------------------------------
-Function: wasE
-Description:
-Determines if letter was E
-*/
-void wasE(void)
-{
-  if(au8Taps[0] == '.')
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "E");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x05;
-    u16countLetter++;
-  }
-}
-/* end of wasE*/
-
-/*------------------------------------------------------------
-Function: wasT
-Description:
-Determines if letter was T
-*/
-void wasT(void)
-{
-  if(au8Taps[0] == '-')
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "T");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x20;
-    u16countLetter++;
-  }
-}
-/* end of wasT*/
-
-/*------------------------------------------------------------
 Function: wasA
 Description:
-Determines if letter was A
+If letter was A displays A on LCD
 */
 void wasA(void)
 {
@@ -135,186 +97,9 @@ void wasA(void)
 }
 /* end of wasA*/
 /*------------------------------------------------------------
-Function: wasI
-Description:
-Determines if letter was I
-*/
-void wasI(void)
-{
-  if((au8Taps[0] == '.') && (au8Taps[1] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "I");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x09;
-    u16countLetter++;
-  }
-}
-/* end of wasI*/
-
-/*------------------------------------------------------------
-Function: wasM
-Description:
-Determines if letter was M
-*/
-void wasM(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '-'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "M");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x13;
-    u16countLetter++;
-  }
-}
-/* end of wasm*/
-/*------------------------------------------------------------
-Function: wasN
-Description:
-Determines if letter was N
-*/
-void wasN(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "N");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x14;
-    u16countLetter++;
-  }
-}
-/* end of wasN*/
-/*------------------------------------------------------------
-Function: wasD
-Description:
-Determines if letter was D
-*/
-void wasD(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "D");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x04;
-    u16countLetter++;
-  }
-}
-/* end of wasD*/
-/*------------------------------------------------------------
-Function: wasG
-Description:
-Determines if letter was G
-*/
-void wasG(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "G");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x07;
-    u16countLetter++;
-  }
-}
-/* end of wasG*/
-/*------------------------------------------------------------
-Function: wasK
-Description:
-Determines if letter was K
-*/
-void wasK(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "K");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x11;
-    u16countLetter++;
-  }
-}
-/* end of wasK*/
-/*------------------------------------------------------------
-Function: wasO
-Description:
-Determines if letter was O
-*/
-void wasO(void)
-{
-  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "O");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x15;
-    u16countLetter++;
-  }
-}
-/* end of wasO*/
-/*------------------------------------------------------------
-Function: wasR
-Description:
-Determines if letter was R
-*/
-void wasR(void)
-{
-  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "R");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x18;
-    u16countLetter++;
-  }
-}
-/* end of wasR*/
-/*------------------------------------------------------------
-Function: wasS
-Description:
-Determines if letter was S
-*/
-void wasS(void)
-{
-  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "S");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x19;
-    u16countLetter++;
-  }
-}
-/* end of wasS*/
-/*------------------------------------------------------------
-Function: wasU
-Description:
-Determines if letter was U
-*/
-void wasU(void)
-{
-  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "U");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x21;
-    u16countLetter++;
-  }
-}
-/* end of wasU*/
-/*------------------------------------------------------------
-Function: wasW
-Description:
-Determines if letter was W
-*/
-void wasW(void)
-{
-  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
-  {
-    LCDMessage(LINE2_START_ADDR + u16countLetter, "W");
-    for(int i = 0; i<10000; i++);
-    au8TestMessage[u16countLetter] = 0x23;
-    u16countLetter++;
-  }
-}
-/* end of wasW*/
-/*------------------------------------------------------------
 Function: wasB
 Description:
-Determines if letter was B
+If letter was B displays B on LCD
 */
 void wasB(void)
 {
@@ -330,7 +115,7 @@ void wasB(void)
 /*------------------------------------------------------------
 Function: wasC
 Description:
-Determines if letter was C
+If letter was C displays C on LCD
 */
 void wasC(void)
 {
@@ -344,9 +129,41 @@ void wasC(void)
 }
 /* end of wasC*/
 /*------------------------------------------------------------
+Function: wasD
+Description:
+If letter was D displays D on LCD
+*/
+void wasD(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "D");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x04;
+    u16countLetter++;
+  }
+}
+/* end of wasD*/
+/*------------------------------------------------------------
+Function: wasE
+Description:
+If letter was E displays E on LCD
+*/
+void wasE(void)
+{
+  if(au8Taps[0] == '.')
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "E");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x05;
+    u16countLetter++;
+  }
+}
+/* end of wasE*/
+/*------------------------------------------------------------
 Function: wasF
 Description:
-Determines if letter was F
+If letter was F displays F on LCD
 */
 void wasF(void)
 {
@@ -360,9 +177,25 @@ void wasF(void)
 }
 /* end of wasF*/
 /*------------------------------------------------------------
+Function: wasG
+Description:
+If letter was G displays G on LCD
+*/
+void wasG(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "G");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x07;
+    u16countLetter++;
+  }
+}
+/* end of wasG*/
+/*------------------------------------------------------------
 Function: wasH
 Description:
-Determines if letter was H
+If letter was H displays H on LCD
 */
 void wasH(void)
 {
@@ -376,9 +209,25 @@ void wasH(void)
 }
 /* end of wasH*/
 /*------------------------------------------------------------
+Function: wasI
+Description:
+If letter was I displays I on LCD
+*/
+void wasI(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "I");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x09;
+    u16countLetter++;
+  }
+}
+/* end of wasI*/
+/*------------------------------------------------------------
 Function: wasJ
 Description:
-Determines if letter was J
+If letter was J displays J on LCD
 */
 void wasJ(void)
 {
@@ -392,9 +241,26 @@ void wasJ(void)
 }
 /* end of wasJ*/
 /*------------------------------------------------------------
+Function: wasK
+Description:
+If letter was K displays K on LCD
+*/
+void wasK(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "K");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x11;
+    u16countLetter++;
+  }
+}
+/* end of wasK*/
+
+/*------------------------------------------------------------
 Function: wasL
 Description:
-Determines if letter was L
+If letter was L displays L on LCD
 */
 void wasL(void)
 {
@@ -408,9 +274,57 @@ void wasL(void)
 }
 /* end of wasL*/
 /*------------------------------------------------------------
+Function: wasM
+Description:
+If letter was M displays M on LCD
+*/
+void wasM(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "M");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x13;
+    u16countLetter++;
+  }
+}
+/* end of wasM*/
+/*------------------------------------------------------------
+Function: wasN
+Description:
+If letter was N displays N on LCD
+*/
+void wasN(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "N");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x14;
+    u16countLetter++;
+  }
+}
+/* end of wasN*/
+/*------------------------------------------------------------
+Function: wasO
+Description:
+If letter was O displays O on LCD
+*/
+void wasO(void)
+{
+  if((au8Taps[0] == '-') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "O");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x15;
+    u16countLetter++;
+  }
+}
+/* end of wasO*/
+/*------------------------------------------------------------
 Function: wasP
 Description:
-Determines if letter was P
+If letter was P displays P on LCD
 */
 void wasP(void)
 {
@@ -426,7 +340,7 @@ void wasP(void)
 /*------------------------------------------------------------
 Function: wasQ
 Description:
-Determines if letter was Q
+If letter was Q displays Q on LCD
 */
 void wasQ(void)
 {
@@ -440,9 +354,76 @@ void wasQ(void)
 }
 /* end of wasQ*/
 /*------------------------------------------------------------
+Function: wasR
+Description:
+If letter was R displays R on LCD
+*/
+void wasR(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "R");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x18;
+    u16countLetter++;
+  }
+}
+/* end of wasR*/
+
+/*------------------------------------------------------------
+Function: wasS
+Description:
+If letter was S displays S on LCD
+*/
+void wasS(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '.'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "S");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x19;
+    u16countLetter++;
+  }
+}
+/* end of wasS*/
+/*------------------------------------------------------------
+Function: wasT
+Description:
+If letter was T displays T on LCD
+*/
+void wasT(void)
+{
+  if(au8Taps[0] == '-')
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "T");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x20;
+    u16countLetter++;
+  }
+}
+/* end of wasT*/
+
+
+/*------------------------------------------------------------
+Function: wasU
+Description:
+If letter was U displays U on LCD
+*/
+void wasU(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '.') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "U");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x21;
+    u16countLetter++;
+  }
+}
+/* end of wasU*/
+/*------------------------------------------------------------
 Function: wasV
 Description:
-Determines if letter was V
+If letter was V displays V on LCD
 */
 void wasV(void)
 {
@@ -456,9 +437,25 @@ void wasV(void)
 }
 /* end of wasV*/
 /*------------------------------------------------------------
+Function: wasW
+Description:
+If letter was W displays W on LCD
+*/
+void wasW(void)
+{
+  if((au8Taps[0] == '.') && (au8Taps[1] == '-') && (au8Taps[2] == '-'))
+  {
+    LCDMessage(LINE2_START_ADDR + u16countLetter, "W");
+    for(int i = 0; i<10000; i++);
+    au8TestMessage[u16countLetter] = 0x23;
+    u16countLetter++;
+  }
+}
+/* end of wasW*/
+/*------------------------------------------------------------
 Function: wasX
 Description:
-Determines if letter was X
+If letter was X displays X on LCD
 */
 void wasX(void)
 {
@@ -474,7 +471,7 @@ void wasX(void)
 /*------------------------------------------------------------
 Function: wasY
 Description:
-Determines if letter was Y
+If letter was Y displays Y on LCD
 */
 void wasY(void)
 {
@@ -490,7 +487,7 @@ void wasY(void)
 /*------------------------------------------------------------
 Function: wasZ
 Description:
-Determines if letter was Z
+If letter was Z displays Z on LCD
 */
 void wasZ(void)
 {
@@ -1224,7 +1221,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(WHITE);
     LedOn(GREEN);
     PWMAudioSetFrequency(BUZZER1, 400);
-    PWMAudioOn(BUZZER1);
+   // PWMAudioOn(BUZZER1);
   }
   else if (u16countSound < 400)
   {
