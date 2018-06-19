@@ -951,17 +951,20 @@ static void UserApp1SM_MasterIdle(void)
     ButtonAcknowledge(BUTTON3);
   }
    
-} /* end UserApp1SM_Idle() */
+} /* end UserApp1SM_MasterIdle() */
     
 /*-------------------------------------------------------------------------------------------------------------------*/
-/* Wait for ??? */
+/* Wait for Button 2 or 3 to be pressed*/
 static void UserApp1SM_Master_or_Slave()
 {
+  /* Configure as master */
   if(WasButtonPressed(BUTTON3))
   {
     ButtonAcknowledge(BUTTON3);
     AntMasterConfig();
   }
+  
+  /* Configure as slave */
   if(WasButtonPressed(BUTTON2))
   {
     ButtonAcknowledge(BUTTON2);
@@ -974,7 +977,7 @@ static void UserApp1SM_AntChannelAssignMaster()
 {
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP) == ANT_CONFIGURED)
   {
-    /* Channel Assignment is successful so open channel and procede to idle state */
+    /* Channel Assignment is successful so open channel and procede to master idle state */
     AntOpenChannelNumber (ANT_CHANNEL_USERAPP);
     UserApp1_StateMachine = UserApp1SM_MasterIdle;
   }
@@ -982,7 +985,6 @@ static void UserApp1SM_AntChannelAssignMaster()
   /* Watch for time out */
   if(IsTimeUp(&UserApp1_u32Timeout, 3000))
   {
-    //DebugPrintf(UserApp1_au8MessageFail)
     UserApp1_StateMachine = UserApp1SM_Error;
   }
 }/* end UserApp1SM_AntChannelAssign() */
@@ -993,7 +995,7 @@ static void UserApp1SM_AntChannelAssignSlave()
 {
   if(AntRadioStatusChannel(ANT_CHANNEL_USERAPP)== ANT_CONFIGURED)
   {
-    /* Channel assignment is sucessful, so open channel and procede*/
+    /* Channel assignment is sucessful, so open channel and procede to slave idle state*/
     AntOpenChannelNumber(ANT_CHANNEL_USERAPP);
     UserApp1_StateMachine = UserApp1SM_SlaveIdle;
   }
@@ -1006,7 +1008,7 @@ static void UserApp1SM_AntChannelAssignSlave()
 }/* end UserApp1SM_AntChannelAssignSlave() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
-/* Wait for ANT channel assignment */
+/* Wait for Button 0 to be pressed */
 static void UserApp1SM_SlaveIdle()
 {
   /* Look at BUTTON0 to open channel */
@@ -1055,33 +1057,13 @@ static void UserApp1SM_WaitChannelOpen()
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ANT channel assignment */
 static void UserApp1SM_ChannelOpen()
-{
-  /* Check for BUTTON0 to close chnnel */
-  if(WasButtonPressed(BUTTON0))
-  {
-    /* Got the button, so complete one-time actions before next state */
-    ButtonAcknowledge(BUTTON0);
-    
-    /* Queue close channel, change LED to blinking green to indicate channel closing */
-    AntCloseChannelNumber(ANT_CHANNEL_USERAPP);
-    //u8LastState = 0xff
-    LedOff(YELLOW);
-    LedOff(BLUE);
-    LedBlink(GREEN, LED_2HZ);
-    
-    /* Set timer and advance states */
-    UserApp1_u32Timeout = G_u32SystemTime1ms;
-   // UserApp1_StateMachine = UserApp1SM_WaitChannelClose;
-  } /* end if (WasButtonPressed(BUTTON0)) */
-  
+{ 
   /* Always check for ANT messages */
   if(AntReadAppMessageBuffer())
   {
     /* New data message: check what it is */
     if(G_eAntApiCurrentMessageClass == ANT_DATA)
-    {
-      //UserApp1_u32DataMsgCount++;
-      
+    { 
       /* We synced with a device, blue is solid */
       LCDCommand(LCD_CLEAR_CMD);
       for(int i = 0; i<10000; i++);
@@ -1205,9 +1187,6 @@ static void UserApp1SM_ChannelOpen()
       
       /* Check if message was CAMP */
       wasMessage();
-      
-     // LCDCommand(LCD_CLEAR_CMD);
-      for(int i = 0; i<10000; i++);
       LCDMessage(LINE2_START_ADDR, au8DataContent);
      }
   }
