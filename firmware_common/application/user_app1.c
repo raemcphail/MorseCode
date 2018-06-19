@@ -70,6 +70,8 @@ AntAssignChannelInfoType UserApp1_sChannelInfo;
 
 static u16 u16countTapTime;
 static u16 u16countSpaceTime;
+static u16 u16countLetter;
+static u16 u16countTaps;
 static u8 au8Taps[] = "";
 static u8  au8DataContent[] = {0, 0, 0, 0, 0, 0, 0, 0};
 static u16 u16countSound;
@@ -81,6 +83,8 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------
 Function: wasA
 Description:
 If letter was A displays A on LCD
@@ -402,8 +406,6 @@ void wasT(void)
   }
 }
 /* end of wasT*/
-
-
 /*------------------------------------------------------------
 Function: wasU
 Description:
@@ -503,7 +505,7 @@ void wasZ(void)
 /*------------------------------------------------------------
 Function: wasShort
 Description:
-Determines if tap was short
+If tap was short displays a '.' on the LCD
 */
 void wasShort(void)
 {
@@ -523,7 +525,7 @@ void wasShort(void)
 /*------------------------------------------------------------
 Function: wasLong
 Description:
-Determines if tap was long
+If tap was short displays a '-' on the LCD
 */
 void wasLong(void)
 {
@@ -543,7 +545,7 @@ void wasLong(void)
 /*------------------------------------------------------------
 Function: wasLetter
 Description:
-Determines if a letter was correctly entered
+Displays the last 8 correctly entered letters
 */
 void wasLetter(void)
 {
@@ -596,7 +598,7 @@ void wasLetter(void)
 /* end of wasLetter*/
 /*------------------------------------------------------------
 Function: deleteLetter
-Description:deletes letter that was entered most recently
+Description: Deletes letter that was entered most recently
 
 */
 void deleteLetter(void)
@@ -618,12 +620,17 @@ void deleteLetter(void)
 
 /*------------------------------------------------------------
 Function: checkTime
-Description:
-
+Description: Changes Leds based on how buttons are held and releashed.
+White on means expecting a new letter
+Purple on means expecting next tap
+Blue on means button0 has been held long enough for a short 
+Cyan on means button0 has been held long enough for a long
 */
 void checkTime(void)
 {
-   if(u16countSpaceTime>=1000)
+  /* Button0 has been releashed long enough for the board to expect 
+     the next letter. Check if previous group of taps was a letter */
+  if(u16countSpaceTime>=1000)
   {
     LedOn(WHITE);
     wasLetter();
@@ -633,6 +640,8 @@ void checkTime(void)
     LedOff(WHITE);
   }
   
+  /*  Button0 has been releashed long enough for the board to expect 
+     the next tap. */
   if(u16countSpaceTime>=300)
   {
     LedOn(PURPLE);
@@ -644,6 +653,7 @@ void checkTime(void)
     LedOff(PURPLE);
   }
   
+  /* Button0 has been held long enough for tap to be a long. */
   if(u16countTapTime>=300)
   {
     LedOn(CYAN);
@@ -653,6 +663,7 @@ void checkTime(void)
     LedOff(CYAN);
   }
   
+   /* Button0 has been held long enough for tap to be a short. */
   if(u16countTapTime>=1)
   {
     LedOn(BLUE);
@@ -672,7 +683,7 @@ UserApp1SM_CorrectMessage
 */
 void wasMessage(void)
 {
-  /* If the message is CAMP followed by 4 spaces */
+  /* If the message is CAMP followed by 4 spaces go to correct message state */
   if(
      (G_au8AntApiCurrentMessageBytes[0] == 0x03) && (G_au8AntApiCurrentMessageBytes[1] == 0x01) && 
      (G_au8AntApiCurrentMessageBytes[2] == 0x13) && (G_au8AntApiCurrentMessageBytes[3] == 0x16) &&
@@ -711,10 +722,10 @@ void UserApp1Initialize(void)
     /* Set a message up on LCD. Delay is required to let the clear command send */
     LCDCommand(LCD_CLEAR_CMD);
     for(u32 i = 0; i < 10000; i++);
+    /* Set a message up on LCD that displays instructions on how to configure
+       board a master or slave */
     LCDMessage(LINE1_START_ADDR, "Button 3 for Master");
     LCDMessage(LINE2_START_ADDR, "Button 2 for Slave");
-    UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
-    
     /* Set counter to 0 to start. Counts number of longs or shorts*/
     static u16 u16countTaps;
    /* Set counter to 0 to start. Counts number of letters*/
@@ -729,7 +740,9 @@ void UserApp1Initialize(void)
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-  //  UserApp1_StateMachine = UserApp1SM_Idle;
+     /* Set state machine to state the configures board as 
+    slave if button 2 was pressed or master is button 3 was pressed */
+    UserApp1_StateMachine = UserApp1SM_Master_or_Slave;
   }
   else
   {
@@ -763,12 +776,7 @@ void UserApp1RunActiveState(void)
 /*----------------------------------------------------------------------------------------------------------------------
 Function AntMasterConfig()
 
-Description:
-
-Requires:
-
-
-Promises:
+Description: Configures board as master
 
 */
 void AntMasterConfig(void)
@@ -806,7 +814,6 @@ void AntMasterConfig(void)
     else
     {
       /* The task ins't properly initialized so shut down and don't run*/
-      //DebugPrinf(UseraApp1_au8MessageFail)
       UserApp1_StateMachine = UserApp1SM_Error;
     }
 } /* end AntMasterConfig */
@@ -814,16 +821,12 @@ void AntMasterConfig(void)
 /*----------------------------------------------------------------------------------------------------------------------
 Function AntSlaveConfig()
 
-Description:
-
-Requires:
-
-
-Promises:
+Description:Configures boarfd as a slave
 
 */
 void AntSlaveConfig(void)
 { 
+  /* Displays a message telling user to press button 0 to connect to channel */
   LCDCommand(LCD_CLEAR_CMD);
   for(int i = 0; i<10000; i++);
   LCDMessage(LINE1_START_ADDR, "Press Button 0");
@@ -863,7 +866,6 @@ void AntSlaveConfig(void)
     else
     {
       /* The task ins't properly initialized so shut down and don't run*/
-      //DebugPrinf(UseraApp1_au8MessageFail)
       LedOn(RED);
       UserApp1_StateMachine = UserApp1SM_Error;
     }
@@ -886,21 +888,13 @@ static void UserApp1SM_MasterIdle(void)
   /* start AntReadAppMessageBuffer */
   if(AntReadAppMessageBuffer())
   {
-    /* new message from ANT task: check what it is */
-    if(G_eAntApiCurrentMessageClass == ANT_DATA)
-    {
-      
-    }
-    else if(G_eAntApiCurrentMessageClass == ANT_TICK)
-    {
-      
-    }
-
     AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
-  }/* end AntReadAppMessageBuffer */
+  } /* end AntReadAppMessageBuffer */
   
-  
+  /* Update LCDs and check if a letter has been correctly entered */
   checkTime();
+  
+  /* Count how long button id held and reset how long button is released to 0 */
   if(IsButtonPressed(BUTTON0))
   {
     u16countSpaceTime = 0;
@@ -908,6 +902,11 @@ static void UserApp1SM_MasterIdle(void)
     LedOff(WHITE);
     LedOff(PURPLE);
   }
+  /* Count how long button has been released. Determine if button was held 
+     long enough to be a short or long then reset how long button is held to 0.
+     A long would also qualify as a short but being long takes prescendence over
+     being short.
+    */
   else
   {
     u16countSpaceTime++;
@@ -922,11 +921,14 @@ static void UserApp1SM_MasterIdle(void)
     u16countTapTime = 0;
   }
   
+  /* delete most recent letter */
   if(WasButtonPressed(BUTTON1))
   {
     ButtonAcknowledge(BUTTON1);
     deleteLetter();
   }
+  
+  /* add a space as next letter */
   if(WasButtonPressed(BUTTON2))
   {
     ButtonAcknowledge(BUTTON2);
@@ -934,6 +936,8 @@ static void UserApp1SM_MasterIdle(void)
     au8TestMessage[u16countLetter] = 0x00;
     u16countLetter++;
   }
+  
+  /* Clear message */
   if(WasButtonPressed(BUTTON3))
   {
     LCDCommand(LCD_CLEAR_CMD);
@@ -1231,7 +1235,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(PURPLE);
     LedOn(YELLOW);
     LedOn(CYAN);
-    PWMAudioSetFrequency(BUZZER1, 500);
+   // PWMAudioSetFrequency(BUZZER1, 500);
   }
   else if (u16countSound < 600)
   {
@@ -1241,7 +1245,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(GREEN);
     LedOn(ORANGE);
     LedOn(BLUE);
-    PWMAudioSetFrequency(BUZZER1, 600);
+    //PWMAudioSetFrequency(BUZZER1, 600);
   }
   else if (u16countSound < 900)
   {
@@ -1251,7 +1255,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(WHITE);
     LedOn(YELLOW);
     LedOn(CYAN);
-    PWMAudioSetFrequency(BUZZER1, 700);
+  //  PWMAudioSetFrequency(BUZZER1, 700);
   }
   else if (u16countSound < 1300)
   {
@@ -1261,7 +1265,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(PURPLE);
     LedOn(GREEN);
     LedOn(RED);
-    PWMAudioSetFrequency(BUZZER1, 500);
+   // PWMAudioSetFrequency(BUZZER1, 500);
   }
   else if (u16countSound < 1800)
   {
@@ -1273,7 +1277,7 @@ static void UserApp1SM_CorrectMessage()
     LedOn(YELLOW);
     LedOn(ORANGE);
     LedOn(RED);
-    PWMAudioSetFrequency(BUZZER1, 800);
+  //  PWMAudioSetFrequency(BUZZER1, 800);
   }
   else if (u16countSound >= 1800)
   {
