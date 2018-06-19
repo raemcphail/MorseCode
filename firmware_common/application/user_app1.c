@@ -75,6 +75,7 @@ static u8 au8Taps[] = "";
 static u16 u16countTaps;
 static u16 u16countLetter;
 static u8  au8DataContent[] = {0, 0, 0, 0, 0, 0, 0, 0};
+static u16 u16countSound;
   
 /**********************************************************************************************************************
 Function Definitions
@@ -723,6 +724,9 @@ void UserApp1Initialize(void)
     static u16 u16countLetter; 
    /* Set counter to 0 to start. Counts to 300ms*/
    u16countTapTime = 0;
+   /* Set counter to 0 to start. Used to time osunds once 
+      correct message has been receive on slave board*/
+   u16countSound = 0;
    /* Set counter to 0 to start. Counts to 300ms*/
    u16countSpaceTime = 0;
   /* If good initialization, set state to Idle */
@@ -1212,10 +1216,72 @@ static void UserApp1SM_ChannelOpen()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_CorrectMessage()
 {
-  LedOn(ORANGE);
-
-  for(int i = 0; i < 10000; i++);
-  
+  u16countSound++;
+  if(u16countSound < 200)
+  {
+    LedOn(RED);
+    LedOff(BLUE);
+    LedOn(WHITE);
+    LedOn(GREEN);
+    PWMAudioSetFrequency(BUZZER1, 400);
+    PWMAudioOn(BUZZER1);
+  }
+  else if (u16countSound < 400)
+  {
+    LedOff(RED);
+    LedOff(GREEN);
+    LedOff(WHITE);
+    LedOn(PURPLE);
+    LedOn(YELLOW);
+    LedOn(CYAN);
+    PWMAudioSetFrequency(BUZZER1, 500);
+  }
+  else if (u16countSound < 600)
+  {
+    LedOff(PURPLE);
+    LedOff(YELLOW);
+    LedOff(CYAN);
+    LedOn(GREEN);
+    LedOn(ORANGE);
+    LedOn(BLUE);
+    PWMAudioSetFrequency(BUZZER1, 600);
+  }
+  else if (u16countSound < 900)
+  {
+    LedOff(GREEN);
+    LedOff(BLUE);
+    LedOff(ORANGE);
+    LedOn(WHITE);
+    LedOn(YELLOW);
+    LedOn(CYAN);
+    PWMAudioSetFrequency(BUZZER1, 700);
+  }
+  else if (u16countSound < 1300)
+  {
+    LedOff(YELLOW);
+    LedOff(CYAN);
+    LedOff(WHITE);
+    LedOn(PURPLE);
+    LedOn(GREEN);
+    LedOn(RED);
+    PWMAudioSetFrequency(BUZZER1, 500);
+  }
+  else if (u16countSound < 1800)
+  {
+    LedOn(WHITE);
+    LedOn(PURPLE);
+    LedOn(BLUE);
+    LedOn(CYAN);
+    LedOn(GREEN);
+    LedOn(YELLOW);
+    LedOn(ORANGE);
+    LedOn(RED);
+    PWMAudioSetFrequency(BUZZER1, 800);
+  }
+  else if (u16countSound >= 1800)
+  {
+    PWMAudioOff(BUZZER1);
+  }
 }/* end UserApp1SM_CorrectMessage() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
