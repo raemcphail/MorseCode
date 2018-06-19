@@ -56,6 +56,7 @@ Function Declarations
   void checkTime(void);
   void wasLetter(void);
   void deleteLetter(void);
+  void wasMessage (void);
 
   void wasA(void);
   void wasB(void);
@@ -112,6 +113,8 @@ static void UserApp1SM_AntChannelAssignSlave(void);
 static void UserApp1SM_WaitChannelOpen(void);
 static void UserApp1SM_ChannelOpen(void);
 static void UserApp1SM_WaitChannelClose(void);
+
+static void UserApp1SM_CorrectMessage(void);
 
 #endif /* __USER_APP1_H */
 

@@ -588,7 +588,6 @@ void wasLetter(void)
     wasZ();
   }
   
-  
   if(u16countLetter >= 8)
   {
     u16countLetter = 0;
@@ -665,6 +664,28 @@ void checkTime(void)
     LedOff(BLUE);
   }
   
+}
+/* end of checkTime*/
+
+/*------------------------------------------------------------
+Function: wasMessage
+Description:If the ant message recieve was CAMP then change state to
+UserApp1SM_CorrectMessage
+*/
+void wasMessage(void)
+{
+  /* If the message is CAMP followed by 4 spaces */
+  if(
+     (G_au8AntApiCurrentMessageBytes[0] == 0x03) && (G_au8AntApiCurrentMessageBytes[1] == 0x01) && 
+     (G_au8AntApiCurrentMessageBytes[2] == 0x13) && (G_au8AntApiCurrentMessageBytes[3] == 0x16) &&
+     (G_au8AntApiCurrentMessageBytes[4] == 0x00) && (G_au8AntApiCurrentMessageBytes[5] == 0x00) && 
+     (G_au8AntApiCurrentMessageBytes[6] == 0x00) && (G_au8AntApiCurrentMessageBytes[7] == 0x00)
+    )
+  {
+    LCDCommand(LCD_CLEAR_CMD);
+    for(int i = 0; i < 10000; i++); 
+    UserApp1_StateMachine = UserApp1SM_CorrectMessage;
+  }
 }
 /* end of checkTime*/
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -979,12 +1000,6 @@ static void UserApp1SM_AntChannelAssignSlave()
 /* Wait for ANT channel assignment */
 static void UserApp1SM_SlaveIdle()
 {
-  /*
-  LCDClearChars(LINE1_START_ADDR, 20);
-  LCDClearChars(LINE2_START_ADDR, 20);
-  for(u32 i = 0; i < 150000; i++);
-  LCDMessage(LINE1_START_ADDR, "Button 0 to connect");
-  for(u32 i = 0; i < 10000; i++);*/
   /* Look at BUTTON0 to open channel */
   if(WasButtonPressed(BUTTON0))
   {  
@@ -1174,9 +1189,13 @@ static void UserApp1SM_ChannelOpen()
         }
         else
         {
+          au8DataContent[i] = 0x00;
           au8DataContent[i] = ' ';
         }
       }
+      
+      /* Check if message was CAMP */
+      wasMessage();
       
      // LCDCommand(LCD_CLEAR_CMD);
       for(int i = 0; i<10000; i++);
@@ -1184,6 +1203,18 @@ static void UserApp1SM_ChannelOpen()
      }
   }
 }/* end UserApp1SM_WaitChannelOpen() */
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Wait for ANT channel assignment */
+static void UserApp1SM_CorrectMessage()
+{
+  LedOn(ORANGE);
+  //LCDMessage(LINE1_START_ADDR, "Correct Message");
+  for(int i = 0; i < 10000; i++);
+  LCDMessage(LINE2_START_ADDR, "Take me to leader");
+  for(int i = 0; i < 10000; i++);
+  
+}/* end UserApp1SM_CorrectMessage() */
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Handle an error */
